@@ -29,19 +29,63 @@
     </style>
     <script>
         function loadPage(page) {
-            fetch(page).then(response => response.text()).then(data => {
-                document.getElementById('content').innerHTML = data;
-            });
+            fetch(page)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('content').innerHTML = data;
+
+                    // Use setTimeout to ensure DOM is updated before executing scripts
+                    setTimeout(() => {
+                        // Execute scripts in the loaded content
+                        const scripts = document.getElementById('content').getElementsByTagName('script');
+                        Array.from(scripts).forEach(script => {
+                            const newScript = document.createElement('script');
+                            Array.from(script.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                            newScript.appendChild(document.createTextNode(script.innerHTML));
+                            script.parentNode.replaceChild(newScript, script);
+                        });
+
+                        // Call initPage if it exists
+                        if (typeof window.initPage === 'function') {
+                            window.initPage();
+                        }
+                    }, 0);
+                });
         }
 
-        function loadSidebar() {
-            fetch('sidebar.html').then(response => response.text()).then(data => {
-                document.getElementById('sidebar').innerHTML = data;
+    function loadSidebar() {
+        fetch('sidebar.html').then(response => response.text()).then(data => {
+            document.getElementById('sidebar').innerHTML = data;
+            // Add click event listeners to sidebar links
+            const sidebarLinks = document.querySelectorAll('#sidebar-links a');
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.getAttribute('data-page');
+                    loadPage(page);
+                });
             });
+        });
+    }
+
+        window.initPage = function() {
+            console.log("User List initialized");
+            // Check if fetchUsers exists before calling it
+            if (typeof fetchUsers === 'function') {
+                fetchUsers();
+            } else {
+                console.error("fetchUsers function not found");
+            }
         }
+
+    // Load sidebar and initial content when the page loads
+    document.addEventListener("DOMContentLoaded", () => {
+        loadSidebar();
+        loadPage('Dashboard.html');
+    });
     </script>
 </head>
-<body onload="loadSidebar()">
+<body>
 <div class="d-flex">
     <div id="sidebar"></div> <!-- Sidebar will be injected here -->
     <div class="flex-grow-1 p-4">
