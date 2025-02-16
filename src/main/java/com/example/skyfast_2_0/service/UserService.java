@@ -49,6 +49,8 @@ public class UserService {
             user.setPhoneNumber(userDTO.getPhoneNumber());
             user.setAddress(userDTO.getAddress());
             user.setRole(userDTO.getRole());
+            user.setDateOfBirth(userDTO.getDateOfBirth());
+            user.setStatus(userDTO.getStatus());
             user.setUpdateAt(LocalDateTime.now());
             userRepository.save(user);
             return modelMapper.map(user, UserDTO.class);
@@ -57,8 +59,10 @@ public class UserService {
     }
 
     public boolean deleteUser(Integer id) {
-        if (userRepository.existsById(id)) {
-            userRepository.deleteById(id);
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            userRepository.delete(user);
             return true;
         }
         return false;
