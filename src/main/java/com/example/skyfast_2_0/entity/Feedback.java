@@ -5,15 +5,13 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.Date;
-
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "feedback")
+@Table(name = "Feedback")
 public class Feedback {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -28,9 +26,8 @@ public class Feedback {
     private String comments;
 
     @NotNull
-    @Temporal(TemporalType.DATE)
     @Column(name = "feedback_date", nullable = false)
-    private Date feedbackDate;
+    private LocalDate feedbackDate;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

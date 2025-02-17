@@ -5,14 +5,13 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "promotion")
+@Table(name = "Promotion")
 public class Promotion {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -24,7 +23,7 @@ public class Promotion {
     private String code;
 
     @NotNull
-    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "description", nullable = false, columnDefinition = "text")
     private String description;
 
     @NotNull
@@ -32,14 +31,12 @@ public class Promotion {
     private Integer discountPercentage;
 
     @NotNull
-    @Temporal(TemporalType.DATE)
     @Column(name = "start_date", nullable = false)
-    private Date startDate;
+    private LocalDate startDate;
 
     @NotNull
-    @Temporal(TemporalType.DATE)
     @Column(name = "end_date", nullable = false)
-    private Date endDate;
+    private LocalDate endDate;
 
     @Size(max = 255)
     @NotNull

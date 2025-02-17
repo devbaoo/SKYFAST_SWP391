@@ -5,23 +5,21 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "payment")
+@Table(name = "Payment")
 public class Payment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
     @NotNull
-    @Temporal(TemporalType.DATE)
     @Column(name = "payment_date", nullable = false)
-    private Date paymentDate;
+    private LocalDate paymentDate;
 
     @Size(max = 255)
     @NotNull
