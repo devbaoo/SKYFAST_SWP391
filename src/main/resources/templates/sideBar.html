@@ -1,38 +1,27 @@
-<nav class="sidebar p-3">
-    <h4 class="text-center dashboard-title">SkyFast</h4>
+<!-- sideBar.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Định nghĩa fragment sidebar với tên "sidebar" -->
+<nav th:fragment="sidebar" class="p-3" style="width: 250px; height: 100vh; background: #343a40; transition: width 0.3s;">
+<!--    <h4 class="text-center dashboard-title text-white" data-page="Dashboard.html">SkyFast</h4>-->
     <ul class="nav flex-column" id="sidebar-links">
         <li class="nav-item">
-            <a href="/dashboard" class="nav-link active">
-                <i class="fas fa-home"></i>Dashboard
-            </a>
+            <a th:href="@{/Dashboard.html}" class="nav-link text-white" data-page="Dashboard.html">Dashboard</a>
         </li>
+<!--        <li class="nav-item">-->
+<!--            <a th:href="@{/airplanelist.html}" class="nav-link text-white" data-page="airplanelist.html">Airplane Management</a>-->
+<!--        </li>-->
         <li class="nav-item">
-            <a href="/airplanelist" class="nav-link">
-                <i class="fas fa-plane"></i>Airplane Management
-            </a>
+            <a th:href="@{/tickets/management}" class="nav-link text-white" data-page="ticketManagement.html">Ticket Management</a>
         </li>
+<!--        <li class="nav-item">-->
+<!--            <a th:href="@{/orderManagement.html}" class="nav-link text-white" data-page="orderManagement.html">Order Management</a>-->
+<!--        </li>-->
         <li class="nav-item">
-            <a href="/ticketManagement" class="nav-link">
-                <i class="fas fa-ticket-alt"></i>Ticket Management
-            </a>
+            <a th:href="@{/users/management}" class="nav-link text-white" data-page="userlist.html">User Management</a>
         </li>
-        <li class="nav-item">
-            <a href="/orderManagement" class="nav-link">
-                <i class="fas fa-shopping-cart"></i>Order Management
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="/userlist" class="nav-link">
-                <i class="fas fa-users"></i>User Management
-            </a>
-        </li>
-<nav class="p-3" style="width: 250px; height: 100vh; background: #343a40; transition: width 0.3s;">
-    <h4 class="text-center dashboard-title text-white" data-page="Dashboard.html">SkyFast</h4>
-    <ul class="nav flex-column" id="sidebar-links">
-        <li class="nav-item"><a href="Dashboard.html" class="nav-link text-white" data-page="Dashboard.html">Dashboard</a></li>
-        <li class="nav-item"><a href="airplanelist.html" class="nav-link text-white" data-page="airplanelist.html">Airplane Management</a></li>
-        <li class="nav-item"><a href="ticketManagement.html" class="nav-link text-white" data-page="ticketManagement.html">Ticket Management</a></li>
-        <li class="nav-item"><a href="orderManagement.html" class="nav-link text-white" data-page="orderManagement.html">Order Management</a></li>
-        <li class="nav-item"><a href="userlist.html" class="nav-link text-white" data-page="userlist.html">User Management</a></li>
     </ul>
 </nav>
+</body>
+</html>

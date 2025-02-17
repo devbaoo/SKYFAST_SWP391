@@ -5,6 +5,7 @@ import com.example.skyfast_2_0.dto.TicketInfoDTO;
 import com.example.skyfast_2_0.dto.UserDTO;
 import com.example.skyfast_2_0.service.TicketService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,4 +37,13 @@ public class TicketController {
         TicketInfoDTO updatedTicket = ticketService.updateTicket(id, ticketDTO);
         return updatedTicket != null ? ResponseEntity.ok(updatedTicket) : ResponseEntity.notFound().build();
     }
+
+//    @GetMapping("/list")
+//    public String ticketManagement(Model model) {
+//        model.addAttribute("currentPage", "ticketManagement.html");
+//        model.addAttribute("dashboardTitle", "SkyFast");
+//        // Các thuộc tính khác nếu cần
+//        return "ticketManagement"; // Tên file Thymeleaf (ticketManagement.html)
+//    }
+
 }

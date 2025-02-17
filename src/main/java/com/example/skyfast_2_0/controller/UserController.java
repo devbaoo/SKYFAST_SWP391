@@ -3,6 +3,7 @@ package com.example.skyfast_2_0.controller;
 import com.example.skyfast_2_0.dto.UserDTO;
 import com.example.skyfast_2_0.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,5 +42,13 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
         return userService.deleteUser(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/page")
+    public String ticketManagement(Model model) {
+        model.addAttribute("currentPage", "userlist.html");
+        model.addAttribute("dashboardTitle", "SkyFast");
+        // Các thuộc tính khác nếu cần
+        return "ticketManagement"; // Tên file Thymeleaf (ticketManagement.html)
     }
 }
