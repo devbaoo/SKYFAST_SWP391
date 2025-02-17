@@ -11,9 +11,10 @@ import lombok.Setter;
 @Entity
 @Table(name = "passenger")
 public class Passenger {
+
     @Id
-    @Column(name = "passenger_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
     @Size(max = 255)
@@ -35,13 +36,10 @@ public class Passenger {
     @Column(name = "identification_number", nullable = false)
     private Integer identificationNumber;
 
-    @NotNull
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number")
     private Integer phoneNumber;
 
     @Size(max = 255)
-    @NotNull
-    @Column(name = "email", nullable = false)
+    @Column(name = "email")
     private String email;
-
 }

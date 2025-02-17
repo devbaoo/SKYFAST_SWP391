@@ -5,18 +5,17 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.Instant;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "flight")
 public class Flight {
+
     @Id
-    @Column(name = "flight_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
     @Size(max = 255)
@@ -25,21 +24,23 @@ public class Flight {
     private String flightNumber;
 
     @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "departure_time", nullable = false)
-    private LocalDateTime departureTime;
+    private Date departureTime;
 
     @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "arrival_time", nullable = false)
-    private LocalDateTime arrivalTime;
+    private Date arrivalTime;
 
     @NotNull
     @Column(name = "duration", nullable = false)
-    private Float duration;
+    private Integer duration;
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "flight_status", nullable = false)
-    private String flightStatus;
+    @Column(name = "status", nullable = false)
+    private String status;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -54,6 +55,5 @@ public class Flight {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "route_id", nullable = false)
-    private com.example.skyfast_2_0.entity.Route route;
-
+    private Route route;
 }
