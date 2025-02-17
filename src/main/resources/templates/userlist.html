@@ -1,21 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flight Ticket Dashboard - User List</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${pageTitle}">Flight Ticket Dashboard - User List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
         body {
             font-family: Arial, sans-serif;
         }
-        nav {
-            background: #343a40;
-            color: white;
-        }
-        .nav-link:hover {
-            background: #495057;
-            border-radius: 5px;
+        /* Style chung cho sidebar và nội dung chính */
+        .main-content {
+            margin-left: 100px; /* khoảng cách tương ứng với sidebar */
+            width: calc(100% - 260px);
         }
         .content-container {
             padding: 20px;
@@ -23,32 +20,21 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+        .table thead th {
+            background-color: #e9ecef;
+        }
+        /* Style cho sidebar nếu cần tùy chỉnh */
     </style>
     <script>
-
         let allUsers = [];
 
-        function toggleStatus(button, userId) {
-            const newStatus = button.innerText === 'Active' ? 'Inactive' : 'Active';
-            fetch(`http://localhost:8080/users/${userId}/toggle-status`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ active: newStatus === 'Active' })
-            })
-                .then(response => response.json())
-                .then(updatedUser => {
-                    button.innerText = newStatus;
-                    button.classList.toggle('btn-success');
-                    button.classList.toggle('btn-secondary');
-                })
-                .catch(error => console.error("Error toggling status:", error));
-        }
-
+        // Lấy danh sách User từ API
         async function fetchUsers() {
             try {
-                const response = await fetch('http://localhost:8080/users');
+                const response = await fetch("http://localhost:8080/users");
+                if (!response.ok) {
+                    throw new Error("Failed to fetch users");
+                }
                 allUsers = await response.json();
                 renderUsers(allUsers);
             } catch (error) {
@@ -56,69 +42,60 @@
             }
         }
 
+        // Hiển thị danh sách User vào container có ID userTable
         function renderUsers(users) {
-            const tableBody = document.querySelector("tbody");
+            const tableBody = document.querySelector("#userTable tbody");
+            if (!tableBody) {
+                console.error("Không tìm thấy bảng user với ID userTable");
+                return;
+            }
             tableBody.innerHTML = "";
-
             users.forEach(user => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
-                    <td>${user.id}</td>
-                    <td>${user.userName}</td>
-                    <td>${user.email}</td>
-                    <td>${user.role}</td>
-                    <td>
-                        <button class="btn ${user.active ? 'btn-success' : 'btn-secondary'}" onclick="toggleStatus(this, ${user.id})">
-                            ${user.active ? 'Active' : 'Inactive'}
-                        </button>
-                    </td>
-                    <td>${new Date(user.createdAt).toISOString().split('T')[0]}</td>
-                    <td>
-                        <a href="UserDetail.html?id=${user.id}" class="btn btn-primary">Edit</a>
-                        <button class="btn btn-danger" onclick="deleteUser(${user.id}, this)">Delete</button>
-                    </td>
-                `;
+          <td>${user.id}</td>
+          <td>${user.userName}</td>
+          <td>${user.email}</td>
+          <td>${user.role}</td>
+          <td>
+            <button class="btn ${user.active ? 'btn-success' : 'btn-secondary'}" onclick="toggleStatus(this, ${user.id})">
+              ${user.active ? 'Active' : 'Inactive'}
+            </button>
+          </td>
+          <td>${new Date(user.createdAt).toISOString().split('T')[0]}</td>
+          <td>
+            <a href="UserDetail.html?id=${user.id}" class="btn btn-primary">Edit</a>
+            <button class="btn btn-danger" onclick="deleteUser(${user.id}, this)">Delete</button>
+          </td>
+        `;
                 tableBody.appendChild(row);
             });
         }
-        async function createUser() {
-            const newUser = {
-                userName: document.getElementById('newUsername').value,
-                fullName: document.getElementById('newFullName').value,
-                email: document.getElementById('newEmail').value,
-                password: document.getElementById('newPassword').value,
-                phoneNumber: document.getElementById('newPhone').value,
-                address: document.getElementById('newAddress').value,
-                role: document.getElementById('newRole').value
-            };
 
-            try {
-                const response = await fetch('http://localhost:8080/users', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(newUser)
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to create user');
-                }
-
-                alert('User created successfully!');
-                document.getElementById('createUserForm').reset();
-                fetchUsers(); // Cập nhật danh sách người dùng sau khi tạo
-                document.getElementById('createUserModal').querySelector('.btn-close').click(); // Đóng modal
-            } catch (error) {
-                console.error('Error creating user:', error);
-                alert('Failed to create user. Please try again.');
-            }
+        // Thay đổi trạng thái hoạt động của User
+        function toggleStatus(button, userId) {
+            const newStatus = button.innerText === "Active" ? "Inactive" : "Active";
+            fetch(`http://localhost:8080/users/${userId}/toggle-status`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ active: newStatus === "Active" })
+            })
+                .then(response => response.json())
+                .then(updatedUser => {
+                    button.innerText = newStatus;
+                    button.classList.toggle("btn-success");
+                    button.classList.toggle("btn-secondary");
+                })
+                .catch(error => console.error("Error toggling status:", error));
         }
 
+        // Xóa user
         async function deleteUser(userId, button) {
-            if (confirm('Are you sure you want to delete this user?')) {
+            if (confirm("Are you sure you want to delete this user?")) {
                 try {
-                    await fetch(`http://localhost:8080/users/${userId}`, { method: 'DELETE' });
+                    await fetch(`http://localhost:8080/users/${userId}`, { method: "DELETE" });
                     allUsers = allUsers.filter(user => user.id !== userId);
                     filterUsers();
                 } catch (error) {
@@ -127,32 +104,73 @@
             }
         }
 
+        // Lọc user theo tên và role
         function filterUsers() {
-            const nameFilter = document.getElementById('nameFilter').value.toLowerCase();
-            const roleFilter = document.getElementById('roleFilter').value;
-
+            const nameFilter = document.getElementById("nameFilter").value.toLowerCase();
+            const roleFilter = document.getElementById("roleFilter").value;
             const filteredUsers = allUsers.filter(user =>
-                (roleFilter === 'ALL' || user.role === roleFilter) &&
+                (roleFilter === "ALL" || user.role === roleFilter) &&
                 user.userName.toLowerCase().includes(nameFilter)
             );
-
             renderUsers(filteredUsers);
-        }a
+        }
 
-
-
+        // Hàm khởi tạo trang User
+        function initUserPage() {
+            const userTable = document.getElementById("userTable");
+            if (userTable) {
+                fetchUsers();
+            }
+        }
 
         if (document.readyState === "loading") {
-            document.addEventListener("DOMContentLoaded", window.initPage);
+            document.addEventListener("DOMContentLoaded", initUserPage);
         } else {
-            window.initPage();
+            initUserPage();
+        }
+
+        // Hàm tạo user mới (nếu cần)
+        async function createUser() {
+            const newUser = {
+                userName: document.getElementById("newUsername").value,
+                fullName: document.getElementById("newFullName").value,
+                email: document.getElementById("newEmail").value,
+                password: document.getElementById("newPassword").value,
+                phoneNumber: document.getElementById("newPhone").value,
+                address: document.getElementById("newAddress").value,
+                role: document.getElementById("newRole").value
+            };
+
+            try {
+                const response = await fetch("http://localhost:8080/users", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(newUser)
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to create user");
+                }
+
+                alert("User created successfully!");
+                document.getElementById("createUserForm").reset();
+                fetchUsers(); // Cập nhật danh sách sau khi tạo
+                document.getElementById("createUserModal").querySelector(".btn-close").click(); // Đóng modal
+            } catch (error) {
+                console.error("Error creating user:", error);
+                alert("Failed to create user. Please try again.");
+            }
         }
     </script>
 </head>
 <body>
-<div class="d-flex">
-    <div id="sidebar"></div>
-    <div class="flex-grow-1 p-4">
+<div class="d-flex flex-row">
+    <!-- Import sidebar từ file sideBar.html -->
+    <div th:replace="sideBar :: sidebar"></div>
+    <!-- Phần nội dung chính -->
+    <div class="container mt-4 main-content">
         <div class="content-container">
             <h2 class="text-dark fw-bold">User List</h2>
             <div class="row mb-3">
@@ -166,7 +184,7 @@
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <input type="text" id="nameFilter" class="form-control" placeholder="Search by Name" oninput="filterUsers()">
+                    <input type="text" id="nameFilter" class="form-control" placeholder="Search by Name" oninput="filterUsers()" />
                 </div>
             </div>
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -175,8 +193,7 @@
                     Create User
                 </button>
             </div>
-
-            <table class="table table-borderless align-middle mt-3">
+            <table id="userTable" class="table table-borderless align-middle mt-3">
                 <thead class="table-light">
                 <tr>
                     <th>ID</th>
@@ -189,11 +206,9 @@
                 </tr>
                 </thead>
                 <tbody>
-
+                <!-- Nội dung sẽ được render bởi JS -->
                 </tbody>
             </table>
-
-
         </div>
         <!-- Modal for Creating User -->
         <div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="createUserModalLabel" aria-hidden="true">
@@ -207,27 +222,27 @@
                         <form id="createUserForm">
                             <div class="mb-3">
                                 <label for="newUsername" class="form-label">User Name</label>
-                                <input type="text" class="form-control" id="newUsername" required>
+                                <input type="text" class="form-control" id="newUsername" required />
                             </div>
                             <div class="mb-3">
                                 <label for="newFullName" class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="newFullName" required>
+                                <input type="text" class="form-control" id="newFullName" required />
                             </div>
                             <div class="mb-3">
                                 <label for="newEmail" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="newEmail" required>
+                                <input type="email" class="form-control" id="newEmail" required />
                             </div>
                             <div class="mb-3">
                                 <label for="newPassword" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="newPassword" required>
+                                <input type="password" class="form-control" id="newPassword" required />
                             </div>
                             <div class="mb-3">
                                 <label for="newPhone" class="form-label">Phone Number</label>
-                                <input type="tel" class="form-control" id="newPhone" required>
+                                <input type="tel" class="form-control" id="newPhone" required />
                             </div>
                             <div class="mb-3">
                                 <label for="newAddress" class="form-label">Address</label>
-                                <input type="text" class="form-control" id="newAddress">
+                                <input type="text" class="form-control" id="newAddress" />
                             </div>
                             <div class="mb-3">
                                 <label for="newRole" class="form-label">Role</label>
@@ -246,6 +261,7 @@
         </div>
     </div>
 </div>
+<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>
