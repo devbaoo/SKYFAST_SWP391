@@ -5,14 +5,13 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "booking")
+@Table(name = "Booking")
 public class Booking {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -23,9 +22,8 @@ public class Booking {
     private Float totalPrice;
 
     @NotNull
-    @Temporal(TemporalType.DATE)
     @Column(name = "booking_date", nullable = false)
-    private Date bookingDate;
+    private LocalDate bookingDate;
 
     @Size(max = 255)
     @NotNull

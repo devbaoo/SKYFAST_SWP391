@@ -5,14 +5,13 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "refund")
+@Table(name = "Refund")
 public class Refund {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -28,14 +27,12 @@ public class Refund {
     private Integer bankNumber;
 
     @NotNull
-    @Temporal(TemporalType.DATE)
     @Column(name = "request_date", nullable = false)
-    private Date requestDate;
+    private LocalDate requestDate;
 
     @NotNull
-    @Temporal(TemporalType.DATE)
     @Column(name = "refund_date", nullable = false)
-    private Date refundDate;
+    private LocalDate refundDate;
 
     @NotNull
     @Column(name = "refund_price", nullable = false)

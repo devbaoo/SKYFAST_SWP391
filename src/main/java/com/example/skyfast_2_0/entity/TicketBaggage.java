@@ -8,17 +8,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "Route_Airport")
-public class RouteAirport {
+@Table(name = "Ticket_Baggage")
+public class TicketBaggage {
     @Id
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "airport_id", nullable = false)
-    private Airport airport;
+    @JoinColumn(name = "ticket_id", nullable = false)
+    private Ticket ticket;
 
     @Id
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "route_id", nullable = false)
-    private Route route;
+    @JoinColumn(name = "baggage_id", nullable = false)
+    private Baggage baggage;
 }
