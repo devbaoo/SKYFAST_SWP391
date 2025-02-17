@@ -9,17 +9,17 @@ import lombok.Setter;
 @Entity
 @Table(name = "route_airport")
 public class RouteAirport {
+
     @EmbeddedId
     private RouteAirportId id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("airportId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "airport_id", nullable = false)
     private Airport airport;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("routeId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "route_id", nullable = false)
     private Route route;
-
 }

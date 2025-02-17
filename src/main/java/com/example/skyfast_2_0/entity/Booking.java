@@ -5,40 +5,40 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "booking")
 public class Booking {
+
     @Id
-    @Column(name = "booking_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
     @NotNull
     @Column(name = "total_price", nullable = false)
-    private Integer totalPrice;
+    private Float totalPrice;
 
     @NotNull
+    @Temporal(TemporalType.DATE)
     @Column(name = "booking_date", nullable = false)
-    private LocalDate bookingDate;
+    private Date bookingDate;
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "payment_status", nullable = false)
-    private String paymentStatus;
+    @Column(name = "booking_status", nullable = false)
+    private String bookingStatus;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private com.example.skyfast_2_0.entity.User user;
+    private User user;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "payment_id", nullable = false)
-    private com.example.skyfast_2_0.entity.Payment payment;
-
+    private Payment payment;
 }
