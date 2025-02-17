@@ -1,25 +1,24 @@
 package com.example.skyfast_2_0.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "route_airport")
+@Table(name = "Route_Airport")
 public class RouteAirport {
-
-    @EmbeddedId
-    private RouteAirportId id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("airportId")
+    @Id
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "airport_id", nullable = false)
     private Airport airport;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("routeId")
+    @Id
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "route_id", nullable = false)
     private Route route;
 }

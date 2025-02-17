@@ -10,7 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "airline")
+@Table(name = "Airline")
 public class Airline {
 
     @Id
