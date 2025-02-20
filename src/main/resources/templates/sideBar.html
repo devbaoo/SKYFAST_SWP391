@@ -1,27 +1,36 @@
-<!-- sideBar.html -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <body>
-<!-- Định nghĩa fragment sidebar với tên "sidebar" -->
-<nav th:fragment="sidebar" class="p-3" style="width: 250px; height: 100vh; background: #343a40; transition: width 0.3s;">
-<!--    <h4 class="text-center dashboard-title text-white" data-page="Dashboard.html">SkyFast</h4>-->
-    <ul class="nav flex-column" id="sidebar-links">
-        <li class="nav-item">
-            <a th:href="@{/Dashboard.html}" class="nav-link text-white" data-page="Dashboard.html">Dashboard</a>
-        </li>
-<!--        <li class="nav-item">-->
-<!--            <a th:href="@{/airplanelist.html}" class="nav-link text-white" data-page="airplanelist.html">Airplane Management</a>-->
-<!--        </li>-->
-        <li class="nav-item">
-            <a th:href="@{/tickets/management}" class="nav-link text-white" data-page="ticketManagement.html">Ticket Management</a>
-        </li>
-<!--        <li class="nav-item">-->
-<!--            <a th:href="@{/orderManagement.html}" class="nav-link text-white" data-page="orderManagement.html">Order Management</a>-->
-<!--        </li>-->
-        <li class="nav-item">
-            <a th:href="@{/users/management}" class="nav-link text-white" data-page="userlist.html">User Management</a>
-        </li>
-    </ul>
-</nav>
+    <nav th:fragment="sidebar" class="p-3" style="width: 250px; height: 100vh; background: #343a40;">
+        <h4 class="text-center text-white mb-4">SkyFast</h4>
+        <ul class="nav flex-column" id="sidebar-links">
+            <li class="nav-item">
+                <a th:href="@{/dashboard}" class="nav-link text-white"
+                    th:classappend="${currentPage == 'dashboard'} ? 'active' : ''">
+                    <i class="fas fa-home me-2"></i>Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/users/management}" class="nav-link text-white"
+                    th:classappend="${currentPage == 'userlist'} ? 'active' : ''">
+                    <i class="fas fa-users me-2"></i>User Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/tickets/management}" class="nav-link text-white"
+                    th:classappend="${currentPage == 'ticketManagement'} ? 'active' : ''">
+                    <i class="fas fa-ticket-alt me-2"></i>Ticket Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/airline/management}" class="nav-link text-white"
+                   th:classappend="${currentPage == 'airlineManagement'} ? 'active' : ''">
+                    <i class="fas fa-ticket-alt me-2"></i>Airline Management
+                </a>
+            </li>
+        </ul>
+    </nav>
 </body>
+
 </html>
