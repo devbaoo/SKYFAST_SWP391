@@ -35,7 +35,7 @@ public class FlightService {
     private FlightMapper flightMapper;
 
     public List<FlightDTO> getAllFlights() {
-        return flightRepository.findByStatusFlight("ACTIVE")
+        return flightRepository.findAll()
                 .stream()
                 .map(flightMapper::toDTO)
                 .collect(Collectors.toList());

@@ -27,4 +27,10 @@ public class ViewController {
         model.addAttribute("currentPage", "airlineManagement");
         return "airlineManagement";
     }
+
+    @GetMapping("/flight/management")
+    public String flightManagement(Model model) {
+        model.addAttribute("currentPage", "flightManagement");
+        return "flightManagement";
+    }
 }
