@@ -2,7 +2,6 @@ package com.example.skyfast_2_0.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,17 +15,21 @@ public class Route {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Size(max = 255)
     @NotNull
-    @Column(name = "departure_airport_id", nullable = false)
-    private String departureAirportId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "departure_airport_id", nullable = false)
+    private Airport departureAirport;
 
-    @Size(max = 255)
     @NotNull
-    @Column(name = "arrival_airport_id", nullable = false)
-    private String arrivalAirportId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "arrival_airport_id", nullable = false)
+    private Airport arrivalAirport;
 
     @NotNull
     @Column(name = "distance", nullable = false)
     private Integer distance;
+
+    @NotNull
+    @Column(name = "route_status", nullable = false)
+    private String routeStatus = "ACTIVE";
 }
