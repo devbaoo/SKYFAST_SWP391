@@ -1,28 +1,41 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title th:text="${pageTitle}">Flight Ticket Dashboard - Ticket List</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .content-container {
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .table thead th {
-            background-color: #e9ecef;
-        }
-        .main-content {
-            margin-left: 100px;
-        }
-    </style>
+    <script src="../assets/js/plugin/webfont/webfont.min.js"></script>
+    <script>
+        WebFont.load({
+            google: { families: ["Public Sans:300,400,500,600,700"] },
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons",
+                ],
+                urls: ["../assets/css/fonts.min.css"],
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            },
+        });
+
+
+
+    </script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="../assets/css/kaiadmin.min.css" />
+
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link rel="stylesheet" href="../assets/css/demo.css" />
     <script>
         let allTickets = [];
 
@@ -92,62 +105,83 @@
         }
     </script>
 </head>
+
 <body>
-<!-- Import sidebar từ file sideBar.html -->
-<div class="d-flex flex-row">
-    <div th:replace="sideBar :: sidebar"></div>
-    <!-- Phần nội dung chính -->
-    <div class="container mt-4 main-content">
-        <div class="content-container">
-            <h2 class="text-dark fw-bold" th:text="${ticketListHeader}">Ticket List</h2>
-            <!-- Bộ lọc -->
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <input
-                            type="text"
-                            id="bookingFilter"
-                            class="form-control"
-                            placeholder="Search by Booking ID"
-                            oninput="filterTickets()"
-                    />
+    <!-- Import sidebar từ file sideBar.html -->
+    <div class="d-flex flex-row">
+        <nav class="sidebar p-3">
+            <h4 class="text-center dashboard-title">SkyFast</h4>
+            <ul class="nav flex-column" id="sidebar-links">
+                <li class="nav-item">
+                    <a href="Dashboard.html" class="nav-link active" data-page="Dashboard.html">
+                        <i class="fas fa-home"></i>Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="airplanelist.html" class="nav-link" data-page="airplanelist.html">
+                        <i class="fas fa-plane"></i>Airplane Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="ticketManagement.html" class="nav-link" data-page="ticketManagement.html">
+                        <i class="fas fa-ticket-alt"></i>Ticket Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="orderManagement.html" class="nav-link" data-page="orderManagement.html">
+                        <i class="fas fa-shopping-cart"></i>Order Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="userlist.html" class="nav-link" data-page="userlist.html">
+                        <i class="fas fa-users"></i>User Management
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- Phần nội dung chính -->
+        <div class="container mt-4 main-content">
+            <div class="content-container">
+                <h2 class="text-dark fw-bold" th:text="${ticketListHeader}">Ticket List</h2>
+                <!-- Bộ lọc -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <input type="text" id="bookingFilter" class="form-control" placeholder="Search by Booking ID"
+                            oninput="filterTickets()" />
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" id="flightFilter" class="form-control" placeholder="Search by Flight Number"
+                            oninput="filterTickets()" />
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <input
-                            type="text"
-                            id="flightFilter"
-                            class="form-control"
-                            placeholder="Search by Flight Number"
-                            oninput="filterTickets()"
-                    />
-                </div>
+                <!-- Bảng Ticket -->
+                <table id="ticketTable" class="table table-borderless align-middle mt-3">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Booking ID</th>
+                            <th>Flight Number</th>
+                            <th>Seat Number</th>
+                            <th>Passenger Full Name</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Nội dung sẽ được render bởi JS -->
+                    </tbody>
+                </table>
             </div>
-            <!-- Bảng Ticket -->
-            <table id="ticketTable" class="table table-borderless align-middle mt-3">
-                <thead class="table-light">
-                <tr>
-                    <th>ID</th>
-                    <th>Booking ID</th>
-                    <th>Flight Number</th>
-                    <th>Seat Number</th>
-                    <th>Passenger Full Name</th>
-                    <th>Price</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- Nội dung sẽ được render bởi JS -->
-                </tbody>
-            </table>
         </div>
     </div>
-</div>
 
 
 
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>
+
 </html>

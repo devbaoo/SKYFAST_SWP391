@@ -45,6 +45,10 @@
                 <input type="text" class="form-control" id="role">
             </div>
             <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <input type="text" class="form-control" id="status">
+        </div>
+            <div class="mb-3">
                 <label for="createdAt" class="form-label">Created At</label>
                 <input type="text" class="form-control" id="createdAt" readonly>
             </div>
@@ -100,6 +104,7 @@
         document.getElementById('phone').value = userData.phoneNumber;
         document.getElementById('address').value = userData.address;
         document.getElementById('role').value = userData.role;
+        document.getElementById('status').value = userData.status;
         document.getElementById('createdAt').value = new Date(userData.createdAt).toISOString().split('T')[0];
 
     }
@@ -114,7 +119,8 @@
             password: document.getElementById('password').value,
             phoneNumber: document.getElementById('phone').value,
             address: document.getElementById('address').value,
-            role: document.getElementById('role').value
+            role: document.getElementById('role').value,
+            status: document.getElementById('status').value
         };
 
         try {
