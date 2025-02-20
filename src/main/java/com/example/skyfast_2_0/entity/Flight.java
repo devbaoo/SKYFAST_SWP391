@@ -56,4 +56,8 @@ public class Flight {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "route_id", nullable = false)
     private Route route;
+
+    @NotNull
+    @Column(name = "status_flight", nullable = false)
+    private String statusFlight = "ACTIVE";
 }

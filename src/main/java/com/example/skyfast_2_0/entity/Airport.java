@@ -53,4 +53,8 @@ public class Airport {
     @NotNull
     @Column(name = "image", nullable = false)
     private String image;
+
+     @NotNull
+    @Column(name = "airport_status", nullable = false)
+    private String airportStatus = "ACTIVE";
 }
