@@ -9,12 +9,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "Seat")
+@Table(name = "seat")
 public class Seat {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Size(max = 255)
@@ -28,10 +27,6 @@ public class Seat {
     private String status;
 
     @NotNull
-    @Column(name = "seat_each_row", nullable = false)
-    private Integer seatEachRow;
-
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "airplane_id", nullable = false)
     private Airplane airplane;
@@ -39,5 +34,6 @@ public class Seat {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "class_category_id", nullable = false)
-    private ClassCategory classCategory;
+    private Classcategory classCategory;
+
 }

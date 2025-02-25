@@ -5,17 +5,17 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "Flight")
+@Table(name = "flight")
 public class Flight {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Size(max = 255)
@@ -24,14 +24,12 @@ public class Flight {
     private String flightNumber;
 
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "departure_time", nullable = false)
-    private Date departureTime;
+    private LocalDateTime departureTime;
 
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "arrival_time", nullable = false)
-    private Date arrivalTime;
+    private LocalDateTime arrivalTime;
 
     @NotNull
     @Column(name = "duration", nullable = false)
@@ -57,7 +55,4 @@ public class Flight {
     @JoinColumn(name = "route_id", nullable = false)
     private Route route;
 
-    @NotNull
-    @Column(name = "status_flight", nullable = false)
-    private String statusFlight = "ACTIVE";
 }

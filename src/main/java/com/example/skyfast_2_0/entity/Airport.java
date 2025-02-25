@@ -9,12 +9,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "Airport")
+@Table(name = "airport")
 public class Airport {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "airport_id", nullable = false)
-    private Integer airportId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Size(max = 255)
     @NotNull
@@ -54,7 +54,4 @@ public class Airport {
     @Column(name = "image", nullable = false)
     private String image;
 
-     @NotNull
-    @Column(name = "airport_status", nullable = false)
-    private String airportStatus = "ACTIVE";
 }
