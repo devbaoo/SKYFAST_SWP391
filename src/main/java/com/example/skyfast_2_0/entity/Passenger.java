@@ -9,11 +9,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "Passenger")
+@Table(name = "passenger")
 public class Passenger {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Size(max = 255)
@@ -31,14 +31,17 @@ public class Passenger {
     @Column(name = "nationality", nullable = false)
     private String nationality;
 
+    @Size(max = 255)
     @NotNull
     @Column(name = "identification_number", nullable = false)
-    private Integer identificationNumber;
+    private String identificationNumber;
 
+    @Size(max = 255)
     @Column(name = "phone_number")
-    private Integer phoneNumber;
+    private String phoneNumber;
 
     @Size(max = 255)
     @Column(name = "email")
     private String email;
+
 }

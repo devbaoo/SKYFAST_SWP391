@@ -9,11 +9,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "PaymentType")
-public class PaymentType {
+@Table(name = "classcategory")
+public class Classcategory {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Size(max = 255)
@@ -21,8 +21,21 @@ public class PaymentType {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Lob
+    @Column(name = "description")
+    private String description;
+
+    @NotNull
+    @Column(name = "seat_each_row", nullable = false)
+    private Integer seatEachRow;
+
     @Size(max = 255)
     @NotNull
     @Column(name = "image", nullable = false)
     private String image;
+
+    @NotNull
+    @Column(name = "surcharge", nullable = false)
+    private Float surcharge;
+
 }

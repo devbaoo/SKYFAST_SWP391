@@ -5,16 +5,17 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "Refund")
+@Table(name = "refund")
 public class Refund {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Size(max = 255)
@@ -22,9 +23,10 @@ public class Refund {
     @Column(name = "bank", nullable = false)
     private String bank;
 
+    @Size(max = 255)
     @NotNull
     @Column(name = "bank_number", nullable = false)
-    private Integer bankNumber;
+    private String bankNumber;
 
     @NotNull
     @Column(name = "request_date", nullable = false)
@@ -47,4 +49,5 @@ public class Refund {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "booking_id", nullable = false)
     private Booking booking;
+
 }
