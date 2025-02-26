@@ -33,4 +33,11 @@ public class ViewController {
         model.addAttribute("currentPage", "flightManagement");
         return "flightManagement";
     }
+
+    @GetMapping("/booking/management")
+    public String bookingManagement(Model model) {
+        model.addAttribute("currentPage", "bookingManagement");
+        return "bookingManagement";
+    }
+
 }
