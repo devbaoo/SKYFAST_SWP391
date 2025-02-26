@@ -6,13 +6,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RouteMapper {
-    
+
     public RouteDTO toDTO(Route route) {
         RouteDTO dto = new RouteDTO();
         dto.setId(route.getId());
-        // Sửa lại cách lấy ID của airport
-        dto.setDepartureAirportId(route.getDepartureAirport().getAirportId());
-        dto.setArrivalAirportId(route.getArrivalAirport().getAirportId());
+        dto.setDepartureAirportId(route.getDepartureAirport().getId()); // Đảm bảo rằng departureAirport không null
+        dto.setArrivalAirportId(route.getArrivalAirport().getId()); // Đảm bảo rằng arrivalAirport không null
         dto.setDistance(route.getDistance());
         dto.setRouteStatus(route.getRouteStatus());
         return dto;

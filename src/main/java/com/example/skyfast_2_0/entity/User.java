@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -53,10 +54,10 @@ public class User {
     private Role role;
 
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "update_at")
-    private LocalDate updateAt;
+    private LocalDateTime  updateAt;
 
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
@@ -64,6 +65,6 @@ public class User {
     @Size(max = 255)
     @NotNull
     @Column(name = "status", nullable = false)
-    private String status;
+    private String status = "ACTIVE";
 
 }

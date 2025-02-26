@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,8 +22,8 @@ public class UserService {
         this.modelMapper = modelMapper;
     }
 
-    public List<UserDTO> getAllUsers() {
-        List<User> users = userRepository.findAll();
+    public List<UserDTO> getAllActiveAndInactiveUsers() {
+        List<User> users = userRepository.findByStatusIn(Arrays.asList("ACTIVE", "INACTIVE"));
         return users.stream().map(user -> modelMapper.map(user, UserDTO.class)).collect(Collectors.toList());
     }
 
@@ -31,13 +32,16 @@ public class UserService {
         return user.map(value -> modelMapper.map(value, UserDTO.class)).orElse(null);
     }
 
+    // ... existing code ...
     public UserDTO createUser(UserDTO userDTO) {
         User user = modelMapper.map(userDTO, User.class);
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdateAt(LocalDateTime.now());
+        user.setStatus(userDTO.getStatus()); // Đảm bảo gán đúng giá trị status
         userRepository.save(user);
         return modelMapper.map(user, UserDTO.class);
     }
+// ... existing code ...
 
     public UserDTO updateUser(Integer id, UserDTO userDTO) {
         Optional<User> optionalUser = userRepository.findById(id);
@@ -62,7 +66,9 @@ public class UserService {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            userRepository.delete(user);
+            user.setStatus("INACTIVE"); // Thay đổi trạng thái thành INACTIVE
+            user.setUpdateAt(LocalDateTime.now()); // Cập nhật thời gian sửa đổi
+            userRepository.save(user); // Lưu lại thay đổi
             return true;
         }
         return false;

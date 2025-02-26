@@ -57,18 +57,11 @@
 
             airlines.forEach(airline => {
                 // Kiểm tra status để quyết định hiển thị buttons
-                const actionButtons = airline.status === 'ACTIVE' ? `
+                const actionButtons = `
             <a href="airlineDetail.html?id=${airline.id}" class="btn btn-sm btn-primary me-1">
                 <i class="fas fa-edit"></i>
             </a>
-            <button class="btn btn-sm btn-danger" onclick="deleteAirline(${airline.id})">
-                <i class="fas fa-trash"></i>
-            </button>
-        ` : `
-            <button class="btn btn-sm btn-secondary" disabled title="Airline is inactive">
-                <i class="fas fa-edit"></i>
-            </button>
-            <button class="btn btn-sm btn-secondary" disabled title="Airline is inactive">
+            <button class="btn btn-sm btn-danger" onclick="deleteAirline(${airline.id})" ${airline.status === 'INACTIVE' ? 'disabled' : ''}>
                 <i class="fas fa-trash"></i>
             </button>
         `;
@@ -85,7 +78,6 @@
                     </span>
                 </td>
                 <td>
-                    <a href="airlineDetail.html?id=${airline.id}" ></a>
                     ${actionButtons}
                 </td>
             </tr>
@@ -93,7 +85,6 @@
                 tableBody.innerHTML += row;
             });
         }
-
         function formatDate(dateString) {
             const date = new Date(dateString);
             return date.toLocaleDateString();
@@ -275,7 +266,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Country</label>
-                            <input type="number" class="form-control" id="countryOfOperation" required>
+                            <input type="text" class="form-control" id="countryOfOperation" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Founded Date</label>

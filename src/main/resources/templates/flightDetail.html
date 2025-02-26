@@ -125,6 +125,13 @@
                                 </select>
                             </div>
                             <div class="mb-3">
+                                <label for="statusFlight" class="form-label">Status Flight</label>
+                                <select class="form-select" id="statusFlight" required>
+                                    <option value="ACTIVE">ACTIVE</option>
+                                    <option value="INACTIVE">INACTIVE</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
                                 <label for="airlineId" class="form-label">Airline</label>
                                 <select class="form-select" id="airlineId" required>
                                     <!-- Options will be populated dynamically -->
@@ -244,6 +251,7 @@
             document.getElementById('arrivalTime').value = flightData.arrivalTime.slice(0, 16);
             document.getElementById('duration').value = flightData.duration;
             document.getElementById('status').value = flightData.status;
+            document.getElementById('statusFlight').value = flightData.statusFlight;
             document.getElementById('airlineId').value = flightData.airlineId;
             document.getElementById('airplaneId').value = flightData.airplaneId;
             document.getElementById('routeId').value = flightData.routeId;
@@ -257,6 +265,7 @@
                 arrivalTime: document.getElementById('arrivalTime').value,
                 duration: parseInt(document.getElementById('duration').value),
                 status: document.getElementById('status').value,
+                statusFlight: document.getElementById('statusFlight').value,
                 airlineId: parseInt(document.getElementById('airlineId').value),
                 airplaneId: parseInt(document.getElementById('airplaneId').value),
                 routeId: parseInt(document.getElementById('routeId').value)

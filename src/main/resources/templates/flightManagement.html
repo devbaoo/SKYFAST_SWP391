@@ -102,39 +102,39 @@
             tableBody.innerHTML = '';
 
             flights.forEach(flight => {
-                const actionButtons = flight.statusFlight === 'ACTIVE' ? `
-                    <a href="flightDetail.html?id=${flight.id}" class="btn btn-sm btn-primary me-1">
-                        <i class="fas fa-edit"></i>
-                     </a>
-                    <button class="btn btn-sm btn-danger" onclick="deleteFlight(${flight.id})">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                ` : `
-                    <button class="btn btn-sm btn-secondary" disabled>
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-secondary" disabled>
-                        <i class="fas fa-trash"></i>
-                    </button>
-                `;
+                const editButton = `
+            <a href="flightDetail.html?id=${flight.id}" class="btn btn-sm btn-primary me-1">
+                <i class="fas fa-edit"></i>
+            </a>
+        `;
+
+                const deleteButton = flight.statusFlight === 'ACTIVE' ? `
+            <button class="btn btn-sm btn-danger" onclick="deleteFlight(${flight.id})">
+                <i class="fas fa-trash"></i>
+            </button>
+        ` : `
+            <button class="btn btn-sm btn-secondary" disabled>
+                <i class="fas fa-trash"></i>
+            </button>
+        `;
 
                 const row = `
-                    <tr class="${flight.statusFlight === 'INACTIVE' ? 'table-secondary' : ''}">
-                        <td>${flight.flightNumber}</td>
-                        <td>${formatDateTime(flight.departureTime)}</td>
-                        <td>${formatDateTime(flight.arrivalTime)}</td>
-                        <td>${flight.duration} mins</td>
-                        <td>
-                            <span class="badge ${getBadgeClass(flight.status)}">
-                                ${flight.status}
-                            </span>
-                        </td>
-                        <td>${flight.airlineId}</td>
-                        <td>${flight.airplaneId}</td>
-                        <td>${flight.routeId}</td>
-                        <td>${actionButtons}</td>
-                    </tr>
-                `;
+            <tr class="${flight.statusFlight === 'INACTIVE' ? 'table-secondary' : ''}">
+                <td>${flight.flightNumber}</td>
+                <td>${formatDateTime(flight.departureTime)}</td>
+                <td>${formatDateTime(flight.arrivalTime)}</td>
+                <td>${flight.duration} mins</td>
+                <td>
+                    <span class="badge ${getBadgeClass(flight.status)}">
+                        ${flight.status}
+                    </span>
+                </td>
+                <td>${flight.airlineId}</td>
+                <td>${flight.airplaneId}</td>
+                <td>${flight.routeId}</td>
+                <td>${editButton}${deleteButton}</td>
+            </tr>
+        `;
                 tableBody.innerHTML += row;
             });
         }
@@ -226,15 +226,14 @@
             const statusFilter = document.getElementById("statusFilter").value;
             const searchFilter = document.getElementById("searchFilter").value.toLowerCase();
 
-            const filtered = allFlights.filter(flight => {
+            const filteredFlights = allFlights.filter(flight => {
                 const statusMatch = statusFilter === "" || flight.status === statusFilter;
-                const searchMatch = searchFilter === "" ||
-                    flight.flightNumber.toLowerCase().includes(searchFilter);
+                const searchMatch = searchFilter === "" || flight.flightNumber.toLowerCase().includes(searchFilter);
 
                 return statusMatch && searchMatch;
             });
 
-            renderFlights(filtered);
+            renderFlights(filteredFlights);
         }
     </script>
 </head>
