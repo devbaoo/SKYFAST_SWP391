@@ -36,4 +36,9 @@ public class Booking {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "status", nullable = false)
+    private String status = "ACTIVE";
+
 }
