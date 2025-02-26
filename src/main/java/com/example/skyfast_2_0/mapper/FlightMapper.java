@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class FlightMapper {
-    
+
     public FlightDTO toDTO(Flight flight) {
         FlightDTO dto = new FlightDTO();
         dto.setId(flight.getId());

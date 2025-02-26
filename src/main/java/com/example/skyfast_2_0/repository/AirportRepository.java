@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface AirportRepository extends JpaRepository<Airport, Integer> {
     List<Airport> findByAirportStatus(String airportStatus);
-    Optional<Airport> findByAirportIdAndAirportStatus(Integer id, String airportStatus);
+    Optional<Airport> findByIdAndAirportStatus(Integer id, String airportStatus); // Sử dụng 'id' thay vì 'airportId'
 }

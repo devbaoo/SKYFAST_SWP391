@@ -9,7 +9,7 @@ public class AirportMapper {
 
     public AirportDTO toDTO(Airport airport) {
         AirportDTO dto = new AirportDTO();
-        dto.setAirportId(airport.getAirportId());
+        dto.setId(airport.getId()); // Đảm bảo tên trường là id
         dto.setAirportCode(airport.getAirportCode());
         dto.setAirportName(airport.getAirportName());
         dto.setCountry(airport.getCountry());
@@ -24,7 +24,7 @@ public class AirportMapper {
 
     public Airport toEntity(AirportDTO dto) {
         Airport airport = new Airport();
-        airport.setAirportId(dto.getAirportId());
+        airport.setId(dto.getId()); // Đảm bảo tên trường là id
         airport.setAirportCode(dto.getAirportCode());
         airport.setAirportName(dto.getAirportName());
         airport.setCountry(dto.getCountry());

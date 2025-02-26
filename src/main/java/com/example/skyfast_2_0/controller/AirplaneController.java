@@ -1,44 +1,44 @@
-package com.example.skyfast_2_0.controller;
+ package com.example.skyfast_2_0.controller;
 
-import com.example.skyfast_2_0.dto.AirplaneDTO;
-import com.example.skyfast_2_0.service.AirplaneService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+ import com.example.skyfast_2_0.dto.AirplaneDTO;
+ import com.example.skyfast_2_0.service.AirplaneService;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.http.ResponseEntity;
+ import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+ import java.util.List;
 
-@RestController
-@RequestMapping("/api/airplanes")
-public class AirplaneController {
+ @RestController
+ @RequestMapping("/api/airplanes")
+ public class AirplaneController {
 
-    @Autowired
-    private AirplaneService airplaneService;
+     @Autowired
+     private AirplaneService airplaneService;
 
-    @GetMapping
-    public ResponseEntity<List<AirplaneDTO>> getAllAirplanes() {
-        return ResponseEntity.ok(airplaneService.getAllAirplanes());
-    }
+     @GetMapping
+     public ResponseEntity<List<AirplaneDTO>> getAllAirplanes() {
+         return ResponseEntity.ok(airplaneService.getAllAirplanes());
+     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<AirplaneDTO> getAirplaneById(@PathVariable Integer id) {
-        return ResponseEntity.ok(airplaneService.getAirplaneById(id));
-    }
+     @GetMapping("/{id}")
+     public ResponseEntity<AirplaneDTO> getAirplaneById(@PathVariable Integer id) {
+         return ResponseEntity.ok(airplaneService.getAirplaneById(id));
+     }
 
-    @PostMapping
-    public ResponseEntity<AirplaneDTO> createAirplane(@RequestBody AirplaneDTO airplaneDTO) {
-        return ResponseEntity.ok(airplaneService.createAirplane(airplaneDTO));
-    }
+     @PostMapping
+     public ResponseEntity<AirplaneDTO> createAirplane(@RequestBody AirplaneDTO airplaneDTO) {
+         return ResponseEntity.ok(airplaneService.createAirplane(airplaneDTO));
+     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<AirplaneDTO> updateAirplane(@PathVariable Integer id,
-                                                      @RequestBody AirplaneDTO airplaneDTO) {
-        return ResponseEntity.ok(airplaneService.updateAirplane(id, airplaneDTO));
-    }
+     @PutMapping("/{id}")
+     public ResponseEntity<AirplaneDTO> updateAirplane(@PathVariable Integer id,
+                                                       @RequestBody AirplaneDTO airplaneDTO) {
+         return ResponseEntity.ok(airplaneService.updateAirplane(id, airplaneDTO));
+     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAirplane(@PathVariable Integer id) {
-        airplaneService.deleteAirplane(id);
-        return ResponseEntity.ok().build();
-    }
-}
+     @DeleteMapping("/{id}")
+     public ResponseEntity<Void> deleteAirplane(@PathVariable Integer id) {
+         airplaneService.deleteAirplane(id);
+         return ResponseEntity.ok().build();
+     }
+ }
