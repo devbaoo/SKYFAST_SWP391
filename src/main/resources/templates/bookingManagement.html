@@ -71,17 +71,20 @@
             }
         }
 
-        function renderBookings(bookings) {
+        function renderBookings(bookingsList) {
             const tableBody = document.getElementById('bookingTableBody');
             tableBody.innerHTML = '';
 
-            bookings.forEach(booking => {
+            bookingsList.forEach(booking => {
                 const actionButtons = `
                 <button class="btn btn-sm btn-primary me-1" onclick="updateBooking(${booking.id})">
                     <i class="fas fa-edit"></i>
                 </button>
-                <button class="btn btn-sm btn-danger" onclick="deleteBooking(${booking.id})" ${booking.status === 'INACTIVE' ? 'disabled' : ''}>
+                <button class="btn btn-sm btn-danger" onclick="softDeleteBooking(${booking.id})" ${booking.status === 'INACTIVE' ? 'disabled' : ''}>
                     <i class="fas fa-trash"></i>
+                </button>
+                <button class="btn btn-sm btn-info" onclick="viewTickets(${booking.id}) ${booking.status === 'INACTIVE' ? 'disabled' : ''}">
+                    <i class="fas fa-ticket-alt"></i> View Tickets
                 </button>
             `;
 
@@ -96,12 +99,104 @@
                         </span>
                     </td>
                     <td>
+                        <span class="badge ${getBadgeClass(booking.bookingStatus)}">
+                            ${booking.bookingStatus}
+                        </span>
+                    </td>
+                    <td>
                         ${actionButtons}
                     </td>
                 </tr>
             `;
                 tableBody.innerHTML += row;
             });
+        }
+
+        function getBadgeClass(status) {
+            switch (status.toUpperCase()) {
+                case 'CONFIRMED':
+                    return 'bg-success';
+                case 'PENDING':
+                    return 'bg-warning';
+                case 'CANCELLED':
+                    return 'bg-danger';
+                default:
+                    return 'bg-secondary';
+            }
+        }
+
+        async function viewTickets(bookingId) {
+            try {
+                const response = await fetch(`http://localhost:8080/bookings/${bookingId}/tickets`);
+                if (!response.ok) throw new Error('Failed to fetch tickets');
+                const tickets = await response.json();
+                console.log('Tickets for booking:', tickets);
+                displayTickets(tickets);
+            } catch (error) {
+                console.error('Error fetching tickets:', error);
+                alert('Failed to fetch tickets. Please try again.');
+            }
+        }
+
+        function displayTickets(tickets) {
+            const ticketsTableBody = document.getElementById('ticketsTableBody');
+            ticketsTableBody.innerHTML = ''; // Clear previous content
+
+            tickets.forEach(ticket => {
+                const row = `
+                <tr>
+                    <td>${ticket.id}</td>
+                    <td>${ticket.status}</td>
+                    <td>${ticket.ticketPrice}</td>
+                    <td>${ticket.seatId}</td>
+                    <td>${ticket.flightId}</td>
+                    <td>${ticket.passengerId}</td>
+                </tr>
+            `;
+                ticketsTableBody.innerHTML += row;
+            });
+
+            // Show the modal
+            const ticketsModal = new bootstrap.Modal(document.getElementById('ticketsModal'));
+            ticketsModal.show();
+        }
+
+        async function updateBooking(bookingId) {
+            // Find the booking and toggle its status
+            const booking = allBookings.find(b => b.id === bookingId);
+            const newStatus = booking.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
+
+            try {
+                const response = await fetch(`http://localhost:8080/bookings/${bookingId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                if (!response.ok) throw new Error('Failed to update booking status');
+                alert('Booking status updated successfully!');
+                fetchBookings(); // Refresh the list to reflect changes
+            } catch (error) {
+                console.error('Error updating booking status:', error);
+                alert('Failed to update booking status. Please try again.');
+            }
+        }
+
+        async function softDeleteBooking(bookingId) {
+            try {
+                const response = await fetch(`http://localhost:8080/bookings/${bookingId}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) throw new Error('Failed to delete booking');
+                alert('Booking deleted successfully!');
+                fetchBookings(); // Refresh the list to reflect changes
+            } catch (error) {
+                console.error('Error deleting booking:', error);
+                alert('Failed to delete booking. Please try again.');
+            }
         }
 
         function formatDate(dateString) {
@@ -209,6 +304,7 @@
                     <th>Total Price</th>
                     <th>Booking Date</th>
                     <th>Status</th>
+                    <th>Booking Status</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -216,6 +312,34 @@
                 <!-- Booking rows will be inserted here by JavaScript -->
                 </tbody>
             </table>
+        </div>
+    </div>
+    <!-- Modal for displaying tickets -->
+    <div class="modal fade" id="ticketsModal" tabindex="-1" aria-labelledby="ticketsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ticketsModalLabel">Tickets for Booking</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Status</th>
+                            <th>Price</th>
+                            <th>Seat ID</th>
+                            <th>Flight ID</th>
+                            <th>Passenger ID</th>
+                        </tr>
+                        </thead>
+                        <tbody id="ticketsTableBody">
+                        <!-- Ticket rows will be inserted here by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
