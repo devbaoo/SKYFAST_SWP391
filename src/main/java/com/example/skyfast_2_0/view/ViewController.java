@@ -46,4 +46,10 @@ public class ViewController {
         return "promotionManagement";
     }
 
+    @GetMapping("/news/management")
+    public String newsManagement(Model model) {
+        model.addAttribute("currentPage", "newsManagement");
+        return "newsManagement";
+    }
+
 }

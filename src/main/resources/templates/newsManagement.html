@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${pageTitle}">Airline Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="../assets/js/plugin/webfont/webfont.min.js"></script>
+    <script>
+        WebFont.load({
+            google: { families: ["Public Sans:300,400,500,600,700"] },
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons",
+                ],
+                urls: ["../assets/css/fonts.min.css"],
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            },
+        });
+    </script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="../assets/css/kaiadmin.min.css" />
+
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link rel="stylesheet" href="../assets/css/demo.css" />
+    <script>
+        let allNews = []; // Store all news for filtering
+
+        async function fetchNews() {
+            try {
+                const response = await fetch('http://localhost:8080/news');
+                if (!response.ok) throw new Error('Failed to fetch news');
+                const news = await response.json();
+                console.log('Fetched news:', news);
+                allNews = news; // Store news for filtering
+                renderNews(news);
+            } catch (error) {
+                console.error('Error fetching news:', error);
+                throw error; // Re-throw to be caught in createNews
+            }
+        }
+
+        function renderNews(newsList) {
+            const tableBody = document.getElementById('newsTableBody');
+            tableBody.innerHTML = '';
+
+            newsList.forEach(news => {
+                const actionButtons = `
+                <a href="newsDetail.html?id=${news.id}" class="btn btn-sm btn-primary me-1">
+                <i class="fas fa-edit"></i>
+            </a>
+                <button class="btn btn-sm btn-danger" onclick="softDeleteNews(${news.id})" ${news.status === 'INACTIVE' ? 'disabled' : ''}>
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+
+                const row = `
+                <tr class="${news.status === 'INACTIVE' ? 'table-secondary' : ''}">
+                    <td>${news.id}</td>
+                    <td>${news.title}</td>
+                    <td>${news.content}</td>
+                    <td>${news.category}</td>
+                    <td>
+                        <span class="badge ${news.status === 'ACTIVE' ? 'bg-success' : 'bg-danger'}">
+                            ${news.status}
+                        </span>
+                    </td>
+                    <td>
+                        ${actionButtons}
+                    </td>
+                </tr>
+            `;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        function filterNews() {
+            const titleFilter = document.getElementById('newsTitleFilter').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+
+            const filteredNews = allNews.filter(news => {
+                const matchesTitle = news.title.toLowerCase().includes(titleFilter);
+                const matchesCategory = categoryFilter ? news.category === categoryFilter : true;
+                const matchesStatus = statusFilter ? news.status === statusFilter : true;
+
+                return matchesTitle && matchesCategory && matchesStatus;
+            });
+
+            renderNews(filteredNews);
+        }
+
+        async function createNews() {
+            const newNewsData = {
+                title: document.getElementById('newTitle').value,
+                content: document.getElementById('newContent').value,
+                category: document.getElementById('newCategory').value,
+                image: document.getElementById('newImage').value,
+                airlineId: parseInt(document.getElementById('newAirlineId').value),
+                status: document.getElementById('newStatus').value
+            };
+
+            try {
+                const response = await fetch('http://localhost:8080/news', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newNewsData)
+                });
+
+                if (!response.ok) {
+                    const errorMessage = await response.text();
+                    throw new Error(`Failed to create news: ${errorMessage}`);
+                }
+
+                const createdNews = await response.json();
+                console.log('Created news:', createdNews);
+
+                alert('News created successfully!');
+                document.getElementById('createNewsForm').reset();
+                const modal = bootstrap.Modal.getInstance(document.getElementById('createNewsModal'));
+                modal.hide();
+
+                // Refresh the list of news
+                await fetchNews();
+            } catch (error) {
+                console.error('Error creating news:', error);
+                alert(`Failed to create news: ${error.message}`);
+            }
+        }
+
+        async function softDeleteNews(id) {
+            try {
+                const response = await fetch(`http://localhost:8080/news/${id}`, {
+                    method: 'DELETE'
+                });
+                if (!response.ok) throw new Error('Failed to delete news');
+                alert('News deleted successfully');
+                fetchNews(); // Refresh the list
+            } catch (error) {
+                console.error('Error deleting news:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchNews);
+    </script>
+</head>
+
+<body>
+<!-- Import sidebar từ file sideBar.html -->
+<div class="d-flex flex-row">
+    <nav class="sidebar p-3">
+        <h4 class="text-center dashboard-title" style="color: #575962">Staff Management</h4>
+        <ul class="nav flex-column" id="sidebar-links">
+            <li class="nav-item">
+                <a href="ticketManagement.html" class="nav-link active" data-page="ticketManagement.html">
+                    <i class="fas fa-credit-card mr-2"></i>
+                    Ticket Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="flightManagement.html" class="nav-link" data-page="flightManagement.html">
+                    <i class="fas fa-list-alt mr-2">
+                    </i>
+                    Plane Category Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="bookingManagement.html" class="nav-link" data-page="bookingManagement.html">
+                    <i class="fas fa-calendar-alt mr-2"></i>
+                    Booking Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="ticketManagement.html" class="nav-link" data-page="ticketManagement.html">
+                    <i class="fas fa-file-alt mr-2">
+                    </i>
+                    Order Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="promotionManagement.html" class="nav-link" data-page="promotionManagement.html">
+                    <i class="fas fa-tags mr-2">
+                    </i>
+                    Discount Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="newsManagement.html" class="nav-link" data-page="newsManagement.html">
+                    <i class="fas fa-newspaper mr-2">
+                    </i>
+                    News Management
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <!-- Phần nội dung chính -->
+    <div class="container mt-4 main-content">
+        <div class="content-container" style="width: 1545px;">
+            <h2 class="text-dark fw-bold">News List</h2>
+            <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createNewsModal">
+                Create News
+            </button>
+            <!-- Filters -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <input type="text" id="newsTitleFilter" class="form-control" placeholder="Search by News Title" oninput="filterNews()"/>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" id="categoryFilter" class="form-control" placeholder="Search by Category" oninput="filterNews()"/>
+                </div>
+                <div class="col-md-4">
+                    <select id="statusFilter" class="form-control" onchange="filterNews()">
+                        <option value="">All Statuses</option>
+                        <option value="ACTIVE">Active</option>
+                        <option value="INACTIVE">Inactive</option>
+                    </select>
+                </div>
+            </div>
+            <!-- News Table -->
+            <table id="newsTable" class="table table-borderless align-middle mt-3">
+                <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Content</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="newsTableBody">
+                <!-- News rows will be inserted here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="createNewsModal" tabindex="-1" aria-labelledby="createNewsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createNewsModalLabel">Create New News</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createNewsForm">
+                    <!-- Form fields for news details -->
+                    <div class="mb-3">
+                        <label for="newTitle" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="newTitle" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="newContent" class="form-label">Content</label>
+                        <textarea class="form-control" id="newContent" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="newCategory" class="form-label">Category</label>
+                        <input type="text" class="form-control" id="newCategory" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="newImage" class="form-label">Image URL</label>
+                        <input type="text" class="form-control" id="newImage" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="newAirlineId" class="form-label">Airline ID</label>
+                        <input type="number" class="form-control" id="newAirlineId" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="newStatus" class="form-label">Status</label>
+                        <select class="form-select" id="newStatus">
+                            <option value="ACTIVE">Active</option>
+                            <option value="INACTIVE">Inactive</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="createNews()">Create News</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>
