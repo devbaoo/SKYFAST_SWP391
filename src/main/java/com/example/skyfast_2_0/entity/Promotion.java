@@ -44,9 +44,8 @@ public class Promotion {
     @Column(name = "status", nullable = false)
     private String status;
 
-    @Size(max = 255)
-    @NotNull
-    @Column(name = "image", nullable = false)
+    @Lob
+    @Column(name = "image")
     private String image;
 
     @NotNull
@@ -54,4 +53,8 @@ public class Promotion {
     @JoinColumn(name = "airline_id", nullable = false)
     private Airline airline;
 
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "status_promotion", nullable = false)
+    private String statusPromotion = "ACTIVE";
 }

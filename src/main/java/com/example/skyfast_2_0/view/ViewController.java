@@ -40,4 +40,10 @@ public class ViewController {
         return "bookingManagement";
     }
 
+    @GetMapping("/promotion/management")
+    public String promotionManagement(Model model) {
+        model.addAttribute("currentPage", "promotionManagement");
+        return "promotionManagement";
+    }
+
 }
