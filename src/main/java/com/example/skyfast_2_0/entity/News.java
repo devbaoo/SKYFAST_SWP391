@@ -41,4 +41,9 @@ public class News {
     @JoinColumn(name = "arline_id", nullable = false)
     private Airline arline;
 
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "status", nullable = false)
+    private String status = "ACTIVE";
+
 }

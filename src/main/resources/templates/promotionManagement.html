@@ -44,11 +44,12 @@
                 const response = await fetch('http://localhost:8080/promotions');
                 if (!response.ok) throw new Error('Failed to fetch promotions');
                 const promotions = await response.json();
-                console.log('Fetched promotions:', promotions); // Log the fetched data
-                allPromotions = promotions; // Store the fetched promotions
+                console.log('Fetched promotions:', promotions);
+                allPromotions = promotions; // Store promotions for filtering
                 renderPromotions(promotions);
             } catch (error) {
                 console.error('Error fetching promotions:', error);
+                throw error; // Re-throw to be caught in createPromotion
             }
         }
 
@@ -136,17 +137,26 @@
                     body: JSON.stringify(newPromotionData)
                 });
 
-                if (!response.ok) throw new Error('Failed to create promotion');
+                if (!response.ok) {
+                    const errorMessage = await response.text();
+                    throw new Error(`Failed to create promotion: ${errorMessage}`);
+                }
+
+                const createdPromotion = await response.json();
+                console.log('Created promotion:', createdPromotion);
+
                 alert('Promotion created successfully!');
                 document.getElementById('createPromotionForm').reset();
-                $('#createPromotionModal').modal('hide');
-                fetchPromotions(); // Refresh the list of promotions
+                const modal = bootstrap.Modal.getInstance(document.getElementById('createPromotionModal'));
+                modal.hide();
+
+                // Refresh the list of promotions
+                await fetchPromotions();
             } catch (error) {
                 console.error('Error creating promotion:', error);
-                alert('Failed to create promotion. Please try again.');
+                alert(`Failed to create promotion: ${error.message}`);
             }
         }
-
         async function softDeletePromotion(id) {
             try {
                 const response = await fetch(`http://localhost:8080/promotions/${id}`, {
@@ -204,7 +214,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="userlist.html" class="nav-link" data-page="userlist.html">
+                <a href="newsManagement.html" class="nav-link" data-page="newsManagement.html">
                     <i class="fas fa-newspaper mr-2">
                     </i>
                     News Management

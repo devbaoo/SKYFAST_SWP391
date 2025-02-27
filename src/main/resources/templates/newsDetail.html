@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Detail</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../assets/js/plugin/webfont/webfont.min.js"></script>
+    <script>
+        WebFont.load({
+            google: {families: ["Public Sans:300,400,500,600,700"]},
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons",
+                ],
+                urls: ["../assets/css/fonts.min.css"],
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            },
+        });
+    </script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../assets/css/plugins.min.css"/>
+    <link rel="stylesheet" href="../assets/css/kaiadmin.min.css"/>
+
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link rel="stylesheet" href="../assets/css/demo.css"/>
+    <style>
+        #layout {
+            display: flex;
+        }
+
+        #sidebar-container {
+            /* Adjust sidebar width as needed */
+        }
+
+        #main-content {
+            flex: 1;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+<div id="layout">
+    <!-- Sidebar -->
+    <nav class="sidebar p-3">
+        <h4 class="text-center dashboard-title" style="color: #575962">Staff Management</h4>
+        <ul class="nav flex-column" id="sidebar-links">
+            <li class="nav-item">
+                <a href="ticketManagement.html" class="nav-link active" data-page="ticketManagement.html">
+                    <i class="fas fa-credit-card mr-2"></i>
+                    Ticket Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="flightManagement.html" class="nav-link" data-page="flightManagement.html">
+                    <i class="fas fa-list-alt mr-2"></i>
+                    Plane Category Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="bookingManagement.html" class="nav-link" data-page="bookingManagement.html">
+                    <i class="fas fa-calendar-alt mr-2"></i>
+                    Booking Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="ticketManagement.html" class="nav-link" data-page="ticketManagement.html">
+                    <i class="fas fa-file-alt mr-2"></i>
+                    Order Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="promotionManagement.html" class="nav-link" data-page="promotionManagement.html">
+                    <i class="fas fa-tags mr-2"></i>
+                    Discount Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="newsManagement.html" class="nav-link" data-page="newsManagement.html">
+                    <i class="fas fa-newspaper mr-2"></i>
+                    News Management
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <div class="container mt-4">
+            <h2 class="text-dark fw-bold">Edit News</h2>
+            <form id="newsDetailForm">
+                <div class="mb-3">
+                    <label for="newsTitle" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="newsTitle">
+                </div>
+                <div class="mb-3">
+                    <label for="newsContent" class="form-label">Content</label>
+                    <textarea class="form-control" id="newsContent"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="newsCategory" class="form-label">Category</label>
+                    <input type="text" class="form-control" id="newsCategory">
+                </div>
+                <div class="mb-3">
+                    <label for="newsImage" class="form-label">Image</label>
+                    <input type="text" class="form-control" id="newsImage">
+                </div>
+                <div class="mb-3">
+                    <label for="newsAirlineId" class="form-label">Airline ID</label>
+                    <input type="number" class="form-control" id="newsAirlineId">
+                </div>
+                <div class="mb-3">
+                    <label for="newsStatus" class="form-label">Status</label>
+                    <select class="form-select" id="newsStatus">
+                        <option value="ACTIVE">Active</option>
+                        <option value="INACTIVE">Inactive</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="updateNews()">Save Changes</button>
+                <a href="newsManagement.html" class="btn btn-secondary">Back</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+<script>
+    let newsId;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        newsId = getUrlParameter('id');
+        if (newsId) {
+            try {
+                const response = await fetch(`http://localhost:8080/news/${newsId}`);
+                if (!response.ok) throw new Error('Failed to fetch news data');
+                const newsData = await response.json();
+                populateForm(newsData);
+            } catch (error) {
+                console.error('Error fetching news data:', error);
+                alert('Failed to load news data. Please try again.');
+            }
+        } else {
+            alert('News ID not provided. Redirecting to news list.');
+            window.location.href = 'newsManagement.html';
+        }
+    });
+
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        const results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+
+    function populateForm(newsData) {
+        document.getElementById('newsTitle').value = newsData.title;
+        document.getElementById('newsContent').value = newsData.content;
+        document.getElementById('newsCategory').value = newsData.category;
+        document.getElementById('newsImage').value = newsData.image;
+        document.getElementById('newsAirlineId').value = newsData.airlineId;
+        document.getElementById('newsStatus').value = newsData.status;
+    }
+
+    async function updateNews() {
+        const updatedNewsData = {
+            title: document.getElementById('newsTitle').value,
+            content: document.getElementById('newsContent').value,
+            category: document.getElementById('newsCategory').value,
+            image: document.getElementById('newsImage').value,
+            airlineId: parseInt(document.getElementById('newsAirlineId').value),
+            status: document.getElementById('newsStatus').value
+        };
+
+        try {
+            const response = await fetch(`http://localhost:8080/news/${newsId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedNewsData)
+            });
+
+            if (!response.ok) throw new Error('Failed to update news data');
+            alert('News updated successfully!');
+            window.location.href = 'newsManagement.html';
+
+        } catch (error) {
+            console.error('Error updating news data:', error);
+            alert('Failed to save changes. Please try again.');
+        }
+    }
+</script>
+</body>
+</html>

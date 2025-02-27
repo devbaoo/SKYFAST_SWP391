@@ -118,18 +118,6 @@
                 .catch(error => console.error('Error:', error));
         }
 
-        function editAirline(airline) {
-            document.getElementById('airlineId').value = airline.id;
-            document.getElementById('airlineName').value = airline.airlineName;
-            document.getElementById('countryOfOperation').value = airline.countryOfOperation;
-            document.getElementById('foundedDate').value = airline.foundedDate.split('T')[0];
-            document.getElementById('image').value = airline.image;
-
-            document.getElementById('modalTitle').textContent = 'Edit Airline';
-            const modal = new bootstrap.Modal(document.getElementById('addAirlineModal'));
-            modal.show();
-        }
-
         function deleteAirline(id) {
             if (confirm('Are you sure you want to delete this airline?')) {
                 fetch(`http://localhost:8080/api/airlines?id=${id}`, {
