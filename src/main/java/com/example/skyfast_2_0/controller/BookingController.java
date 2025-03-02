@@ -1,15 +1,15 @@
 package com.example.skyfast_2_0.controller;
 
 import com.example.skyfast_2_0.dto.BookingDTO;
-import com.example.skyfast_2_0.dto.TicketDTO;
 import com.example.skyfast_2_0.service.BookingService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/bookings")
+@Controller
+@RequestMapping("/staff/bookingManagement")
 public class BookingController {
 
     private final BookingService bookingService;
@@ -18,33 +18,41 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
+    // Hiển thị tất cả các booking
     @GetMapping
-    public ResponseEntity<List<BookingDTO>> getAllBookings() {
+    public String getAllBookings(Model model) {
         List<BookingDTO> bookings = bookingService.getAllBookings();
-        return ResponseEntity.ok(bookings);
+        model.addAttribute("bookings", bookings);
+        return "bookingManagement"; // Trả về view bookingManagement.html
     }
 
+    // Hiển thị chi tiết booking theo ID
     @GetMapping("/{id}")
-    public ResponseEntity<BookingDTO> getBookingById(@PathVariable Integer id) {
+    public String getBookingById(@PathVariable Integer id, Model model) {
         BookingDTO booking = bookingService.getBookingById(id);
-        return ResponseEntity.ok(booking);
+        model.addAttribute("booking", booking);
+        return "bookingDetail"; // Trả về view bookingDetail.html
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<BookingDTO> updateBooking(@PathVariable Integer id, @RequestBody BookingDTO bookingDTO) {
-        BookingDTO updatedBooking = bookingService.updateBookingStatus(id, bookingDTO.getStatus());
-        return ResponseEntity.ok(updatedBooking);
+    // Hiển thị form chỉnh sửa booking
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Integer id, Model model) {
+        BookingDTO booking = bookingService.getBookingById(id);
+        model.addAttribute("booking", booking);
+        return "bookingEdit"; // Trả về view bookingEdit.html
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> softDeleteBooking(@PathVariable Integer id) {
+    // Cập nhật booking
+    @PostMapping("/edit/{id}")
+    public String updateBooking(@PathVariable Integer id, @ModelAttribute("booking") BookingDTO bookingDTO) {
+        bookingService.updateBookingStatus(id, bookingDTO.getStatus());
+        return "redirect:/staff/bookingManagement"; // Sau khi cập nhật, quay lại danh sách Booking
+    }
+
+    // Xử lý xóa (soft delete) booking
+    @GetMapping("/delete/{id}")
+    public String softDeleteBooking(@PathVariable Integer id) {
         bookingService.updateBookingStatus(id, "INACTIVE");
-        return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/{id}/tickets")
-    public ResponseEntity<List<TicketDTO>> getTicketsByBookingId(@PathVariable Integer id) {
-        List<TicketDTO> tickets = bookingService.getTicketsByBookingId(id);
-        return ResponseEntity.ok(tickets);
+        return "redirect:/staff/bookingManagement"; // Quay lại danh sách Booking sau khi xóa
     }
 }
