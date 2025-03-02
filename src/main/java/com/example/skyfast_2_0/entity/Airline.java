@@ -34,8 +34,7 @@ public class Airline {
     private LocalDate foundedDate;
 
     @Size(max = 255)
-    @NotNull
-    @Column(name = "image", nullable = false)
+    @Column(name = "image")
     private String image;
 
     @Enumerated(EnumType.STRING)
