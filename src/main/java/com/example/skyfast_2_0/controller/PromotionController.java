@@ -2,14 +2,14 @@ package com.example.skyfast_2_0.controller;
 
 import com.example.skyfast_2_0.dto.PromotionDTO;
 import com.example.skyfast_2_0.service.PromotionService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/promotions")
+@Controller
+@RequestMapping("/staff/promotionManagement")
 public class PromotionController {
 
     private final PromotionService promotionService;
@@ -18,33 +18,55 @@ public class PromotionController {
         this.promotionService = promotionService;
     }
 
+    // Hiển thị danh sách tất cả các khuyến mãi
     @GetMapping
-    public ResponseEntity<List<PromotionDTO>> getAllPromotions() {
+    public String getAllPromotions(Model model) {
         List<PromotionDTO> promotions = promotionService.getAllPromotions();
-        return ResponseEntity.ok(promotions);
+        model.addAttribute("promotions", promotions);
+        return "promotionManagement"; // Trả về view promotionManagement.html
     }
 
+    // Hiển thị chi tiết của 1 khuyến mãi theo ID
     @GetMapping("/{id}")
-    public ResponseEntity<PromotionDTO> getPromotionById(@PathVariable Integer id) {
+    public String getPromotionById(@PathVariable Integer id, Model model) {
         PromotionDTO promotion = promotionService.getPromotionById(id);
-        return ResponseEntity.ok(promotion);
+        model.addAttribute("promotion", promotion);
+        return "promotionDetail"; // Trả về view promotionDetail.html
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<PromotionDTO> updatePromotion(@PathVariable Integer id, @RequestBody PromotionDTO promotionDTO) {
-        PromotionDTO updatedPromotion = promotionService.updatePromotion(id, promotionDTO);
-        return ResponseEntity.ok(updatedPromotion);
+    // Hiển thị form chỉnh sửa khuyến mãi
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Integer id, Model model) {
+        PromotionDTO promotion = promotionService.getPromotionById(id);
+        model.addAttribute("promotion", promotion);
+        return "promotionEdit"; // Trả về view promotionEdit.html
     }
 
-    @PostMapping
-    public ResponseEntity<PromotionDTO> createPromotion(@RequestBody PromotionDTO promotionDTO) {
-        PromotionDTO createdPromotion = promotionService.createPromotion(promotionDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdPromotion);
+    // Cập nhật khuyến mãi
+    @PostMapping("/edit/{id}")
+    public String updatePromotion(@PathVariable Integer id, @ModelAttribute("promotion") PromotionDTO promotionDTO) {
+        promotionService.updatePromotion(id, promotionDTO);
+        return "redirect:/staff/promotionManagement"; // Quay lại danh sách sau khi cập nhật
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> softDeletePromotion(@PathVariable Integer id) {
+    // Hiển thị form tạo mới khuyến mãi
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("promotion", new PromotionDTO());
+        return "promotionCreate"; // Trả về view promotionCreate.html
+    }
+
+    // Tạo mới khuyến mãi
+    @PostMapping("/new")
+    public String createPromotion(@ModelAttribute("promotion") PromotionDTO promotionDTO) {
+        promotionService.createPromotion(promotionDTO);
+        return "redirect:/staff/promotionManagement"; // Sau khi tạo mới, quay lại danh sách
+    }
+
+    // Xử lý xóa (soft delete) khuyến mãi
+    @GetMapping("/delete/{id}")
+    public String softDeletePromotion(@PathVariable Integer id) {
         promotionService.softDeletePromotion(id);
-        return ResponseEntity.noContent().build();
+        return "redirect:/staff/promotionManagement"; // Quay lại danh sách sau khi xóa
     }
 }
