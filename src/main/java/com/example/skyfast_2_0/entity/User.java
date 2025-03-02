@@ -49,9 +49,9 @@ public class User {
     private String address;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
-    private Role role;
+        @Enumerated(EnumType.STRING)
+        @Column(name = "role", nullable = false)
+        private Role role;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
