@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${pageTitle}">Airline Dashboard - Create Promotion</title>
+    <!-- Bootstrap CSS and other CSS files -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="../assets/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="../assets/css/demo.css" />
+    <style>
+        /* Background gradient, font và màu sắc tổng thể */
+        body {
+            background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+            font-family: 'Public Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Card container căn giữa */
+        .card-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px;
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+        .card-header {
+            background: #fff;
+            border-bottom: none;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            padding: 20px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+        .card-body {
+            background: #fff;
+            padding: 30px;
+        }
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .form-control,
+        .form-select {
+            border-radius: 6px;
+            border: 1px solid #ced4da;
+            padding: 10px;
+            font-size: 1rem;
+        }
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #5e72e4;
+            box-shadow: 0 0 0 0.2rem rgba(94, 114, 228, 0.25);
+        }
+        .btn-primary {
+            background-color: #5e72e4;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #324cdd;
+        }
+        .btn-secondary {
+            background-color: #adb5bd;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: #fff;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+        .btn-secondary:hover {
+            background-color: #6c757d;
+        }
+        .d-flex.justify-content-between {
+            gap: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="card-container">
+    <div class="card">
+        <div class="card-header">Create Promotion</div>
+        <div class="card-body">
+            <!-- Nếu sử dụng Spring Security, thêm CSRF token nếu có -->
+            <form th:action="@{/staff/promotionManagement/new}" th:object="${promotion}" method="post">
+                <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <div class="mb-3">
+                    <label for="code" class="form-label">Promotion Code</label>
+                    <input type="text" class="form-control" id="code" th:field="*{code}" required />
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" th:field="*{description}" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="discountPercentage" class="form-label">Discount Percentage</label>
+                    <input type="number" class="form-control" id="discountPercentage" th:field="*{discountPercentage}" required />
+                </div>
+                <div class="mb-3">
+                    <label for="startDate" class="form-label">Start Date</label>
+                    <input type="date" class="form-control" id="startDate" th:field="*{startDate}" required />
+                </div>
+                <div class="mb-3">
+                    <label for="endDate" class="form-label">End Date</label>
+                    <input type="date" class="form-control" id="endDate" th:field="*{endDate}" required />
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image URL</label>
+                    <input type="text" class="form-control" id="image" th:field="*{image}" required />
+                </div>
+                <div class="mb-3">
+                    <label for="airlineId" class="form-label">Airline ID</label>
+                    <input type="number" class="form-control" id="airlineId" th:field="*{airlineId}" required />
+                </div>
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select" id="status" th:field="*{status}">
+                        <option value="Active">Active</option>
+                        <option value="Expired">Expired</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="statusPromotion" class="form-label">Status Promotion</label>
+                    <select class="form-select" id="statusPromotion" th:field="*{statusPromotion}">
+                        <option value="ACTIVE">ACTIVE</option>
+                        <option value="INACTIVE">INACTIVE</option>
+                    </select>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary">Create Promotion</button>
+                    <a href="/staff/promotionManagement" class="btn btn-secondary">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
