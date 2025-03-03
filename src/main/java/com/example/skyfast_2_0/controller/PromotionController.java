@@ -2,6 +2,7 @@ package com.example.skyfast_2_0.controller;
 
 import com.example.skyfast_2_0.dto.PromotionDTO;
 import com.example.skyfast_2_0.service.PromotionService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ public class PromotionController {
     public String getAllPromotions(Model model) {
         List<PromotionDTO> promotions = promotionService.getAllPromotions();
         model.addAttribute("promotions", promotions);
+        model.addAttribute("pageTitle", "Promotion Management");
         return "promotionManagement"; // Trả về view promotionManagement.html
     }
 
@@ -31,6 +33,7 @@ public class PromotionController {
     public String getPromotionById(@PathVariable Integer id, Model model) {
         PromotionDTO promotion = promotionService.getPromotionById(id);
         model.addAttribute("promotion", promotion);
+        model.addAttribute("pageTitle", "Edit Promotion");
         return "promotionDetail"; // Trả về view promotionDetail.html
     }
 
@@ -58,15 +61,23 @@ public class PromotionController {
 
     // Tạo mới khuyến mãi
     @PostMapping("/new")
-    public String createPromotion(@ModelAttribute("promotion") PromotionDTO promotionDTO) {
-        promotionService.createPromotion(promotionDTO);
-        return "redirect:/staff/promotionManagement"; // Sau khi tạo mới, quay lại danh sách
+    public ResponseEntity<?> createPromotion(@ModelAttribute PromotionDTO promotionDTO) {
+        try {
+            PromotionDTO createdPromotion = promotionService.createPromotion(promotionDTO);
+            return ResponseEntity.ok(createdPromotion);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to create promotion: " + e.getMessage());
+        }
     }
 
     // Xử lý xóa (soft delete) khuyến mãi
     @GetMapping("/delete/{id}")
-    public String softDeletePromotion(@PathVariable Integer id) {
-        promotionService.softDeletePromotion(id);
-        return "redirect:/staff/promotionManagement"; // Quay lại danh sách sau khi xóa
+    public ResponseEntity<?> softDeletePromotion(@PathVariable Integer id) {
+        try {
+            promotionService.softDeletePromotion(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to delete promotion: " + e.getMessage());
+        }
     }
 }
