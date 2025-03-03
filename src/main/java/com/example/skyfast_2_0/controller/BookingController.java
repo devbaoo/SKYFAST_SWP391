@@ -1,6 +1,7 @@
 package com.example.skyfast_2_0.controller;
 
 import com.example.skyfast_2_0.dto.BookingDTO;
+import com.example.skyfast_2_0.dto.TicketDTO;
 import com.example.skyfast_2_0.service.BookingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ public class BookingController {
     public String getAllBookings(Model model) {
         List<BookingDTO> bookings = bookingService.getAllBookings();
         model.addAttribute("bookings", bookings);
+        model.addAttribute("pageTitle", "Booking Management");
         return "bookingManagement"; // Trả về view bookingManagement.html
     }
 
@@ -44,15 +46,23 @@ public class BookingController {
 
     // Cập nhật booking
     @PostMapping("/edit/{id}")
-    public String updateBooking(@PathVariable Integer id, @ModelAttribute("booking") BookingDTO bookingDTO) {
-        bookingService.updateBookingStatus(id, bookingDTO.getStatus());
-        return "redirect:/staff/bookingManagement"; // Sau khi cập nhật, quay lại danh sách Booking
+    @ResponseBody
+    public BookingDTO updateBooking(@PathVariable Integer id) {
+        BookingDTO booking = bookingService.getBookingById(id);
+        String newStatus = "ACTIVE".equals(booking.getStatus()) ? "INACTIVE" : "ACTIVE";
+        return bookingService.updateBookingStatus(id, newStatus);
+    }
+
+    @GetMapping("/{id}/tickets")
+    @ResponseBody
+    public List<TicketDTO> getTicketsByBookingId(@PathVariable Integer id) {
+        return bookingService.getTicketsByBookingId(id);
     }
 
     // Xử lý xóa (soft delete) booking
     @GetMapping("/delete/{id}")
     public String softDeleteBooking(@PathVariable Integer id) {
-        bookingService.updateBookingStatus(id, "INACTIVE");
+        bookingService.softDeleteBooking(id);
         return "redirect:/staff/bookingManagement"; // Quay lại danh sách Booking sau khi xóa
     }
 }
