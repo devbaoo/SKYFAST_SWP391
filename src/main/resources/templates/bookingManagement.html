@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,205 +8,224 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Các file CSS khác -->
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../assets/css/plugins.min.css" />
-    <link rel="stylesheet" href="../assets/css/kaiadmin.min.css" />
-    <link rel="stylesheet" href="../assets/css/demo.css" />
+    <script th:src="@{/assets/js/plugin/webfont/webfont.min.js}"></script>
+    <script>
+        WebFont.load({
+            google: { families: ["Public Sans:300,400,500,600,700"] },
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons",
+                ],
+                urls: [/* Thêm Thymeleaf cho đúng đường dẫn */
+                    /* "../assets/css/fonts.min.css" */
+                    "/assets/css/fonts.min.css"
+                ],
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            },
+        });
+    </script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins.min.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/kaiadmin.min.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/demo.css}" />
     <style>
         /* Giữ nguyên CSS gốc */
         .nav-link {
             color: #575962;
             transition: color 0.3s ease-in-out;
         }
+
         .nav-link:hover {
             color: #007bff !important;
         }
+
         .nav-link:hover i {
             color: inherit;
         }
     </style>
 </head>
+
 <body>
-<div class="d-flex flex-row">
-    <!-- Sidebar -->
-    <nav class="sidebar p-3">
-        <h4 class="text-center dashboard-title" style="color: #575962">Staff Management</h4>
-        <ul class="nav flex-column" id="sidebar-links">
-            <li class="nav-item">
-                <a href="ticketManagement.html" class="nav-link" data-page="ticketManagement.html">
-                    <i class="fas fa-credit-card mr-2"></i>
-                    Ticket Management
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="flightManagement.html" class="nav-link" data-page="flightManagement.html">
-                    <i class="fas fa-list-alt mr-2"></i>
-                    Plane Category Management
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="bookingManagement.html" class="nav-link active" data-page="bookingManagement.html">
-                    <i class="fas fa-calendar-alt mr-2"></i>
-                    Booking Management
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="ticketManagement.html" class="nav-link" data-page="ticketManagement.html">
-                    <i class="fas fa-file-alt mr-2"></i>
-                    Order Management
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="promotionManagement.html" class="nav-link" data-page="promotionManagement.html">
-                    <i class="fas fa-tags mr-2"></i>
-                    Discount Management
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="newsManagement.html" class="nav-link" data-page="newsManagement.html">
-                    <i class="fas fa-newspaper mr-2"></i>
-                    News Management
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <!-- Nội dung chính -->
-    <div class="container mt-4 main-content">
-        <div class="content-container" style="width: 1545px;">
-            <h2 class="text-dark fw-bold" th:text="${ticketListHeader}">Booking List</h2>
-            <!-- Phần bộ lọc -->
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    <input
-                            type="text"
-                            id="bookingFilter"
-                            class="form-control"
-                            placeholder="Search by Booking ID"
-                            oninput="filterBookings()"
-                    />
+    <div class="d-flex flex-row">
+        <!-- Sidebar -->
+        <nav class="sidebar p-3">
+            <h4 class="text-center dashboard-title" style="color: #575962">Staff Management</h4>
+            <ul class="nav flex-column" id="sidebar-links">
+                <li class="nav-item">
+                    <a href="ticketManagement.html" class="nav-link" data-page="ticketManagement.html">
+                        <i class="fas fa-credit-card mr-2"></i>
+                        Ticket Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="flightManagement.html" class="nav-link" data-page="flightManagement.html">
+                        <i class="fas fa-list-alt mr-2"></i>
+                        Plane Category Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="bookingManagement.html" class="nav-link active" data-page="bookingManagement.html">
+                        <i class="fas fa-calendar-alt mr-2"></i>
+                        Booking Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="ticketManagement.html" class="nav-link" data-page="ticketManagement.html">
+                        <i class="fas fa-file-alt mr-2"></i>
+                        Order Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="promotionManagement.html" class="nav-link" data-page="promotionManagement.html">
+                        <i class="fas fa-tags mr-2"></i>
+                        Discount Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="newsManagement.html" class="nav-link" data-page="newsManagement.html">
+                        <i class="fas fa-newspaper mr-2"></i>
+                        News Management
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- Nội dung chính -->
+        <div class="container mt-4 main-content">
+            <div class="content-container" style="width: 1545px;">
+                <h2 class="text-dark fw-bold" th:text="${ticketListHeader}">Booking List</h2>
+                <!-- Phần bộ lọc -->
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <input type="text" id="bookingFilter" class="form-control" placeholder="Search by Booking ID"
+                            oninput="filterBookings()" />
+                    </div>
+                    <div class="col-md-4">
+                        <input type="date" id="dateFilter" class="form-control" placeholder="Search by Booking Date"
+                            oninput="filterBookings()" />
+                    </div>
+                    <div class="col-md-4">
+                        <select id="statusFilter" class="form-control" onchange="filterBookings()">
+                            <option value="">All Statuses</option>
+                            <option value="ACTIVE">Active</option>
+                            <option value="INACTIVE">Inactive</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <input
-                            type="date"
-                            id="dateFilter"
-                            class="form-control"
-                            placeholder="Search by Booking Date"
-                            oninput="filterBookings()"
-                    />
-                </div>
-                <div class="col-md-4">
-                    <select id="statusFilter" class="form-control" onchange="filterBookings()">
-                        <option value="">All Statuses</option>
-                        <option value="ACTIVE">Active</option>
-                        <option value="INACTIVE">Inactive</option>
-                    </select>
-                </div>
-            </div>
-            <!-- Bảng Booking -->
-            <table id="bookingTable" class="table table-borderless align-middle mt-3">
-                <thead class="table-light">
-                <tr>
-                    <th>ID</th>
-                    <th>Total Price</th>
-                    <th>Booking Date</th>
-                    <th>Status</th>
-                    <th>Booking Status</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <!-- Nếu JS không được kích hoạt, fallback render từ server -->
-                <tbody id="bookingTableBody">
-                <tr th:each="booking : ${bookings}" th:attr="data-booking-date=${#temporals.format(booking.bookingDate, 'yyyy-MM-dd')}">
-                    <td th:text="${booking.id}">1</td>
-                    <td th:text="${booking.totalPrice}">100</td>
-                    <td th:text="${#temporals.format(booking.bookingDate, 'dd MMMM yyyy')}">1 January 2020</td>
-                    <td>
-                  <span th:text="${booking.status}"
-                        th:class="${booking.status == 'ACTIVE' ? 'badge bg-success' : 'badge bg-danger'}">
-                    ACTIVE
-                  </span>
-                    </td>
-                    <td>
-                  <span th:text="${booking.bookingStatus}"
-                        th:class="${booking.bookingStatus == 'CONFIRMED' ? 'badge bg-success' : (booking.bookingStatus == 'PENDING' ? 'badge bg-warning' : (booking.bookingStatus == 'CANCELLED' ? 'badge bg-danger' : 'badge bg-secondary'))}">
-                    CONFIRMED
-                  </span>
-                    </td>
-                    <td>
-                        <button class="btn btn-sm btn-primary me-1" onclick="updateBooking([[${booking.id}]])">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger" onclick="softDeleteBooking([[${booking.id}]])">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                        <button class="btn btn-sm btn-info" onclick="viewTickets([[${booking.id}]])">
-                            <i class="fas fa-ticket-alt"></i> View Tickets
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<!-- Modal hiển thị Tickets -->
-<div class="modal fade" id="ticketsModal" tabindex="-1" aria-labelledby="ticketsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="ticketsModalLabel">Tickets for Booking</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Status</th>
-                        <th>Price</th>
-                        <th>Seat ID</th>
-                        <th>Flight ID</th>
-                        <th>Passenger ID</th>
-                    </tr>
+                <!-- Bảng Booking -->
+                <table id="bookingTable" class="table table-borderless align-middle mt-3">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Total Price</th>
+                            <th>Booking Date</th>
+                            <th>Status</th>
+                            <th>Booking Status</th>
+                            <th>Actions</th>
+                        </tr>
                     </thead>
-                    <tbody id="ticketsTableBody">
-                    <!-- Các dòng ticket sẽ được chèn tại đây -->
+                    <!-- Nếu JS không được kích hoạt, fallback render từ server -->
+                    <tbody id="bookingTableBody">
+                        <tr th:each="booking : ${bookings}"
+                            th:attr="data-booking-date=${#temporals.format(booking.bookingDate, 'yyyy-MM-dd')}">
+                            <td th:text="${booking.id}">1</td>
+                            <td th:text="${booking.totalPrice}">100</td>
+                            <td th:text="${#temporals.format(booking.bookingDate, 'dd MMMM yyyy')}">1 January 2020</td>
+                            <td>
+                                <span th:text="${booking.status}"
+                                    th:class="${booking.status == 'ACTIVE' ? 'badge bg-success' : 'badge bg-danger'}">
+                                    ACTIVE
+                                </span>
+                            </td>
+                            <td>
+                                <span th:text="${booking.bookingStatus}"
+                                    th:class="${booking.bookingStatus == 'CONFIRMED' ? 'badge bg-success' : (booking.bookingStatus == 'PENDING' ? 'badge bg-warning' : (booking.bookingStatus == 'CANCELLED' ? 'badge bg-danger' : 'badge bg-secondary'))}">
+                                    CONFIRMED
+                                </span>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-primary me-1"
+                                    th:onclick="'updateBooking(' + ${booking.id} + ')'">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger"
+                                    th:onclick="'softDeleteBooking(' + ${booking.id} + ')'">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <button class="btn btn-sm btn-info" th:onclick="'viewTickets(' + ${booking.id} + ')'">
+                                    <i class="fas fa-ticket-alt"></i> View Tickets
+                                </button>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-</div>
-<!-- Các file JS -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-<!-- Chuyển dữ liệu bookings sang JS để phục vụ cho lọc -->
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    var allBookings = /*[[${bookings}]]*/ [];
-    /*]]>*/
-</script>
-<script>
-    // Hàm render lại danh sách booking theo mảng truyền vào
-    function renderBookings(bookingsList) {
-        const tableBody = document.getElementById('bookingTableBody');
-        tableBody.innerHTML = '';
-        bookingsList.forEach(booking => {
-            const bookingDateFormatted = new Date(booking.bookingDate).toLocaleDateString(undefined, {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-            const statusBadge = booking.status === 'ACTIVE' ? 'badge bg-success' : 'badge bg-danger';
-            let bookingStatusBadge = 'badge bg-secondary';
-            if (booking.bookingStatus && booking.bookingStatus.toUpperCase() === 'CONFIRMED') {
-                bookingStatusBadge = 'badge bg-success';
-            } else if (booking.bookingStatus && booking.bookingStatus.toUpperCase() === 'PENDING') {
-                bookingStatusBadge = 'badge bg-warning';
-            } else if (booking.bookingStatus && booking.bookingStatus.toUpperCase() === 'CANCELLED') {
-                bookingStatusBadge = 'badge bg-danger';
-            }
-            const row = `
+    <!-- Modal hiển thị Tickets -->
+    <div class="modal fade" id="ticketsModal" tabindex="-1" aria-labelledby="ticketsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ticketsModalLabel">Tickets for Booking</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Status</th>
+                                <th>Price</th>
+                                <th>Seat ID</th>
+                                <th>Flight ID</th>
+                                <th>Passenger ID</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ticketsTableBody">
+                            <!-- Các dòng ticket sẽ được chèn tại đây -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Các file JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <!-- Chuyển dữ liệu bookings sang JS để phục vụ cho lọc -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var allBookings = /*[[${bookings}]]*/[];
+        /*]]>*/
+    </script>
+    <script>
+        // Hàm render lại danh sách booking theo mảng truyền vào
+        function renderBookings(bookingsList) {
+            const tableBody = document.getElementById('bookingTableBody');
+            tableBody.innerHTML = '';
+            bookingsList.forEach(booking => {
+                const bookingDateFormatted = new Date(booking.bookingDate).toLocaleDateString(undefined, {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                const statusBadge = booking.status === 'ACTIVE' ? 'badge bg-success' : 'badge bg-danger';
+                let bookingStatusBadge = 'badge bg-secondary';
+                if (booking.bookingStatus && booking.bookingStatus.toUpperCase() === 'CONFIRMED') {
+                    bookingStatusBadge = 'badge bg-success';
+                } else if (booking.bookingStatus && booking.bookingStatus.toUpperCase() === 'PENDING') {
+                    bookingStatusBadge = 'badge bg-warning';
+                } else if (booking.bookingStatus && booking.bookingStatus.toUpperCase() === 'CANCELLED') {
+                    bookingStatusBadge = 'badge bg-danger';
+                }
+                const row = `
             <tr data-booking-date="${new Date(booking.bookingDate).toISOString().split('T')[0]}" class="${booking.status === 'INACTIVE' ? 'table-secondary' : ''}">
               <td>${booking.id}</td>
               <td>${booking.totalPrice}</td>
@@ -213,96 +233,102 @@
               <td><span class="${statusBadge}">${booking.status}</span></td>
               <td><span class="${bookingStatusBadge}">${booking.bookingStatus}</span></td>
               <td>
-                <button class="btn btn-sm btn-primary me-1" onclick="updateBooking(${booking.id})">
+                <button class="btn btn-sm btn-primary me-1" th:onclick="'updateBooking(' + ${booking.id} + ')'">
                   <i class="fas fa-edit"></i>
                 </button>
-                <button class="btn btn-sm btn-danger" onclick="softDeleteBooking(${booking.id})">
+                <button class="btn btn-sm btn-danger" th:onclick="'softDeleteBooking(' + ${booking.id} + ')'">
                   <i class="fas fa-trash"></i>
                 </button>
-                <button class="btn btn-sm btn-info" onclick="viewTickets(${booking.id})">
+                <button class="btn btn-sm btn-info" th:onclick="'viewTickets(' + ${booking.id} + ')'">
                   <i class="fas fa-ticket-alt"></i> View Tickets
                 </button>
               </td>
             </tr>
           `;
-            tableBody.innerHTML += row;
-        });
-    }
-
-    // Hàm lọc theo Booking ID, Booking Date và Status
-    function filterBookings() {
-        const bookingFilter = document.getElementById('bookingFilter').value.toLowerCase();
-        const dateFilter = document.getElementById('dateFilter').value; // định dạng yyyy-mm-dd
-        const statusFilter = document.getElementById('statusFilter').value;
-        const filteredBookings = allBookings.filter(booking => {
-            const matchesBookingId = booking.id.toString().toLowerCase().includes(bookingFilter);
-            // Lấy ngày gốc theo định dạng yyyy-mm-dd
-            const bookingDate = new Date(booking.bookingDate).toISOString().split('T')[0];
-            const matchesDate = dateFilter ? bookingDate === dateFilter : true;
-            const matchesStatus = statusFilter ? booking.status === statusFilter : true;
-            return matchesBookingId && matchesDate && matchesStatus;
-        });
-        renderBookings(filteredBookings);
-    }
-
-    // Hàm cập nhật trạng thái booking (giả định toggle giữa ACTIVE và INACTIVE)
-    async function updateBooking(bookingId) {
-        // Lấy booking hiện tại từ mảng
-        const booking = allBookings.find(b => b.id === bookingId);
-        const newStatus = booking.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
-        try {
-            const response = await fetch(`/staff/bookingManagement/edit/${bookingId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ status: newStatus })
+                tableBody.innerHTML += row;
             });
-            if (!response.ok) throw new Error('Failed to update booking status');
-            alert('Booking status updated successfully!');
-            // Làm mới trang để cập nhật lại danh sách
-            location.reload();
-        } catch (error) {
-            console.error('Error updating booking status:', error);
-            alert('Failed to update booking status. Please try again.');
         }
-    }
 
-    // Hàm xóa (soft delete) booking
-    async function softDeleteBooking(bookingId) {
-        try {
-            const response = await fetch(`/staff/bookingManagement/delete/${bookingId}`, {
-                method: 'GET'
+        // Hàm lọc theo Booking ID, Booking Date và Status
+        function filterBookings() {
+            const bookingFilter = document.getElementById('bookingFilter').value.toLowerCase();
+            const dateFilter = document.getElementById('dateFilter').value; // định dạng yyyy-mm-dd
+            const statusFilter = document.getElementById('statusFilter').value;
+            const filteredBookings = allBookings.filter(booking => {
+                const matchesBookingId = booking.id.toString().toLowerCase().includes(bookingFilter);
+                // Lấy ngày gốc theo định dạng yyyy-mm-dd
+                const bookingDate = new Date(booking.bookingDate).toISOString().split('T')[0];
+                const matchesDate = dateFilter ? bookingDate === dateFilter : true;
+                const matchesStatus = statusFilter ? booking.status === statusFilter : true;
+                return matchesBookingId && matchesDate && matchesStatus;
             });
-            if (!response.ok) throw new Error('Failed to delete booking');
-            alert('Booking deleted successfully!');
-            location.reload();
-        } catch (error) {
-            console.error('Error deleting booking:', error);
-            alert('Failed to delete booking. Please try again.');
+            renderBookings(filteredBookings);
         }
-    }
 
-    // Hàm hiển thị danh sách vé của booking trong modal
-    async function viewTickets(bookingId) {
-        try {
-            const response = await fetch(`/bookings/${bookingId}/tickets`, {
-                method: 'GET'
-            });
-            if (!response.ok) throw new Error('Failed to fetch tickets');
-            const tickets = await response.json();
-            displayTickets(tickets);
-        } catch (error) {
-            console.error('Error fetching tickets:', error);
-            alert('Failed to fetch tickets. Please try again.');
+        // Hàm cập nhật trạng thái booking (giả định toggle giữa ACTIVE và INACTIVE)
+        async function updateBooking(bookingId) {
+            // Lấy booking hiện tại từ mảng
+            const booking = allBookings.find(b => b.id === bookingId);
+            const newStatus = booking.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
+            try {
+                const response = await fetch(`/staff/bookingManagement/edit/${bookingId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                if (!response.ok) throw new Error('Failed to update booking status');
+                alert('Booking status updated successfully!');
+                // Cập nhật trạng thái trong mảng allBookings
+                booking.status = newStatus;
+                // Render lại danh sách booking
+                renderBookings(allBookings);
+            } catch (error) {
+                console.error('Error updating booking status:', error);
+                alert('Failed to update booking status. Please try again.');
+            }
         }
-    }
 
-    function displayTickets(tickets) {
-        const ticketsTableBody = document.getElementById('ticketsTableBody');
-        ticketsTableBody.innerHTML = '';
-        tickets.forEach(ticket => {
-            const row = `
+        // Hàm xóa (soft delete) booking
+        async function softDeleteBooking(bookingId) {
+            try {
+                const response = await fetch(`/staff/bookingManagement/delete/${bookingId}`, {
+                    method: 'GET'
+                });
+                if (!response.ok) throw new Error('Failed to delete booking');
+                alert('Booking deleted successfully!');
+                // Cập nhật trạng thái trong mảng allBookings
+                const booking = allBookings.find(b => b.id === bookingId);
+                booking.status = 'INACTIVE';
+                // Render lại danh sách booking
+                renderBookings(allBookings);
+            } catch (error) {
+                console.error('Error deleting booking:', error);
+                alert('Failed to delete booking. Please try again.');
+            }
+        }
+
+        // Hàm hiển thị danh sách vé của booking trong modal
+        async function viewTickets(bookingId) {
+            try {
+                const response = await fetch(`/bookings/${bookingId}/tickets`, {
+                    method: 'GET'
+                });
+                if (!response.ok) throw new Error('Failed to fetch tickets');
+                const tickets = await response.json();
+                displayTickets(tickets);
+            } catch (error) {
+                console.error('Error fetching tickets:', error);
+                alert('Failed to fetch tickets. Please try again.');
+            }
+        }
+
+        function displayTickets(tickets) {
+            const ticketsTableBody = document.getElementById('ticketsTableBody');
+            ticketsTableBody.innerHTML = '';
+            tickets.forEach(ticket => {
+                const row = `
             <tr>
               <td>${ticket.id}</td>
               <td>${ticket.status}</td>
@@ -310,18 +336,18 @@
               <td>${ticket.seatId}</td>
               <td>${ticket.flightId}</td>
               <td>${ticket.passengerId}</td>
-            </tr>
-          `;
-            ticketsTableBody.innerHTML += row;
-        });
-        const ticketsModal = new bootstrap.Modal(document.getElementById('ticketsModal'));
-        ticketsModal.show();
-    }
+            </tr>`;
+                ticketsTableBody.innerHTML += row;
+            });
+            const ticketsModal = new bootstrap.Modal(document.getElementById('ticketsModal'));
+            ticketsModal.show();
+        }
 
-    // Sau khi DOM load xong, render lại danh sách booking từ biến allBookings
-    document.addEventListener('DOMContentLoaded', function () {
-        renderBookings(allBookings);
-    });
-</script>
+        // Sau khi DOM load xong, render lại danh sách booking từ biến allBookings
+        document.addEventListener('DOMContentLoaded', function () {
+            renderBookings(allBookings);
+        });
+    </script>
 </body>
+
 </html>
