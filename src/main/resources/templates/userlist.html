@@ -39,25 +39,22 @@
             <h4 class="text-center dashboard-title" style="color: #575962">SkyFast</h4>
             <ul class="nav flex-column" id="sidebar-links">
                 <li class="nav-item">
-                    <a href="/dashboard" class="nav-link"
-                        th:classappend="${currentPage == 'dashboard'} ? 'active' : ''">
+                    <a href="/dashboard" class="nav-link active" data-page="Dashboard.html">
                         <i class="fas fa-home"></i>Dashboard
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/flight/management" class="nav-link"
-                        th:classappend="${currentPage == 'flight'} ? 'active' : ''">
+                    <a href="/flights" class="nav-link" data-page="flightManagement.html">
                         <i class="fas fa-plane"></i>Flight Management
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/airline/management" class="nav-link"
-                        th:classappend="${currentPage == 'airline'} ? 'active' : ''">
+                    <a href="/airlines/list" class="nav-link" data-page="airlineManagement.html">
                         <i class="fas fa-plane"></i>Airline Management
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/users/list" class="nav-link" th:classappend="${currentPage == 'users'} ? 'active' : ''">
+                    <a href="/users/list" class="nav-link" data-page="userlist.html">
                         <i class="fas fa-users"></i>User Management
                     </a>
                 </li>
@@ -66,7 +63,7 @@
 
         <!-- Main Content -->
         <div class="container mt-4 main-content" style="margin-right: 290px;">
-        <div class="content-container" style="width: 1545px;">
+            <div class="content-container" style="width: 1545px;">
                 <!-- Alert Messages -->
                 <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
                     <span th:text="${successMessage}"></span>
