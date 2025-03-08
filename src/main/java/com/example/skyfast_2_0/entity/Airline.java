@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -29,7 +30,6 @@ public class Airline {
     @Column(name = "country_of_operation", nullable = false)
     private String countryOfOperation;
 
-    @NotNull
     @Column(name = "founded_date", nullable = false)
     private LocalDate foundedDate;
 
