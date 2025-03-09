@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -40,5 +41,9 @@ public class Booking {
     @NotNull
     @Column(name = "status", nullable = false)
     private String status = "ACTIVE";
+
+    @OneToMany(mappedBy = "booking", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Payment> payments;
+
 
 }
