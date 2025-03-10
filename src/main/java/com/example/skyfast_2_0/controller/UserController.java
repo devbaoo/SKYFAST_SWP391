@@ -48,6 +48,8 @@ public class UserController {
 
     @PostMapping("/update/{id}")
     public String updateUser(@PathVariable Integer id, @ModelAttribute UserDTO userDTO, RedirectAttributes redirectAttributes) {
+        System.out.println("Received dateOfBirth: " + userDTO.getDateOfBirth()); // Kiểm tra dữ liệu nhận được
+
         try {
             UserDTO updatedUser = userService.updateUser(id, userDTO);
             if (updatedUser != null) {
@@ -60,6 +62,7 @@ public class UserController {
         }
         return "redirect:/users/list";
     }
+
 
     @PostMapping("/delete/{id}")
     public String deleteUser(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
