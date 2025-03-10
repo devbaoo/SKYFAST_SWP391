@@ -30,8 +30,17 @@ public class UserService {
 
     public UserDTO getUserById(Integer id) {
         Optional<User> user = userRepository.findById(id);
-        return user.map(value -> modelMapper.map(value, UserDTO.class)).orElse(null);
+        UserDTO userDTO = user.map(value -> modelMapper.map(value, UserDTO.class)).orElse(null);
+
+        if (userDTO != null) {
+            System.out.println("UserDTO Date of Birth: " + userDTO.getDateOfBirth());
+        } else {
+            System.out.println("User not found!");
+        }
+
+        return userDTO;
     }
+
 
     // ... existing code ...
     public UserDTO createUser(UserDTO userDTO) {
