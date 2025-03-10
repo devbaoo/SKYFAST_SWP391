@@ -51,25 +51,19 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a th:href="@{/staff/flightManagement}" class="nav-link" data-page="flightManagement">
-                    <i class="fas fa-list-alt mr-2"></i>
-                    Plane Category Management
-                </a>
-            </li>
-            <li class="nav-item">
                 <a th:href="@{/staff/bookingManagement}" class="nav-link" data-page="bookingManagement.html">
                     <i class="fas fa-calendar-alt mr-2"></i>
                     Booking Management
                 </a>
             </li>
             <li class="nav-item">
-                <a href="promotionManagement.html" class="nav-link" data-page="promotionManagement.html">
+                <a th:href="@{/staff/promotionManagement}" class="nav-link active" data-page="promotionManagement">
                     <i class="fas fa-tags mr-2"></i>
                     Promotion Management
                 </a>
             </li>
             <li class="nav-item">
-                <a href="newsManagement.html" class="nav-link" data-page="newsManagement.html">
+                <a th:href="@{/staff/newsManagement}" class="nav-link" data-page="newsManagement.html">
                     <i class="fas fa-newspaper mr-2"></i>
                     News Management
                 </a>
@@ -104,11 +98,13 @@
                 </div>
                 <div class="mb-3">
                     <label for="startDate" class="form-label">Start Date</label>
-                    <input type="date" class="form-control" id="startDate" th:field="*{startDate}" required />
+                    <input type="date" class="form-control" id="startDate"
+                           th:value="${promotion.startDate != null ? #temporals.format(promotion.startDate, 'yyyy-MM-dd') : ''}">
                 </div>
                 <div class="mb-3">
                     <label for="endDate" class="form-label">End Date</label>
-                    <input type="date" class="form-control" id="endDate" th:field="*{endDate}" required />
+                    <input type="date" class="form-control" id="endDate"
+                           th:value="${promotion.endDate != null ? #temporals.format(promotion.endDate, 'yyyy-MM-dd') : ''}">
                 </div>
                 <div class="mb-3">
                     <label for="status" class="form-label">Status</label>

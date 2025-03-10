@@ -57,7 +57,7 @@ public class UserService {
             user.setRole(userDTO.getRole());
             user.setDateOfBirth(userDTO.getDateOfBirth());
             user.setStatus(userDTO.getStatus());
-            user.setUpdateAt(LocalDate.now()); // Cập nhật ngày sửa đổi
+            user.setUpdateAt(LocalDate.now());
             userRepository.save(user);
             return modelMapper.map(user, UserDTO.class);
         }
