@@ -1,6 +1,9 @@
 package com.example.skyfast_2_0.controller;
 
 import com.example.skyfast_2_0.dto.PromotionDTO;
+import com.example.skyfast_2_0.entity.Airline;
+import com.example.skyfast_2_0.repository.AirlineRepository;
+import com.example.skyfast_2_0.service.AirlineService;
 import com.example.skyfast_2_0.service.PromotionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,9 +17,13 @@ import java.util.List;
 public class PromotionController {
 
     private final PromotionService promotionService;
+    private final AirlineService airlineService;
+    private final AirlineRepository airlineRepository;
 
-    public PromotionController(PromotionService promotionService) {
+    public PromotionController(PromotionService promotionService, AirlineService airlineService, AirlineRepository airlineRepository) {
         this.promotionService = promotionService;
+        this.airlineService = airlineService;
+        this.airlineRepository = airlineRepository;
     }
 
     // Hiển thị danh sách tất cả các khuyến mãi
@@ -41,8 +48,15 @@ public class PromotionController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Integer id, Model model) {
         PromotionDTO promotion = promotionService.getPromotionById(id);
+        List<Airline> airlines = airlineRepository.findAll();
+
+        for (Airline airline : airlines) {
+            System.out.println("ID: " + airline.getId() + ", Name: " + airline.getAirlineName());
+        }
+
         model.addAttribute("promotion", promotion);
-        return "promotionEdit"; // Trả về view promotionEdit.html
+        model.addAttribute("airlines", airlines);
+        return "promotionEdit";
     }
 
     // Cập nhật khuyến mãi
