@@ -28,12 +28,17 @@ public class AirlineController {
     public String getAirlineDetail(@PathVariable Integer id, Model model) {
         try {
             Airline airline = airlineService.getAirlineById(id);
+            System.out.println("🔍 Debug: Airline ID = " + airline.getId());
+            System.out.println("🔍 Debug: Airline Name = " + airline.getAirlineName());
+            System.out.println("🔍 Debug: Founded Date = " + airline.getFoundedDate());
+
             model.addAttribute("airline", airline);
             return "airlineDetail";
         } catch (RuntimeException e) {
             return "redirect:/airlines/list";
         }
     }
+
 
     @PostMapping("/create")
     public String createAirline(@ModelAttribute Airline airline, RedirectAttributes redirectAttributes) {
@@ -49,6 +54,14 @@ public class AirlineController {
     @PostMapping("/update/{id}")
     public String updateAirline(@PathVariable Integer id, @ModelAttribute Airline airline, RedirectAttributes redirectAttributes) {
         try {
+            System.out.println("Updating Airline ID: " + id);
+            System.out.println("Received Founded Date: " + airline.getFoundedDate()); // Debug
+
+            if (airline.getFoundedDate() == null) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Founded Date cannot be null!");
+                return "redirect:/airlines/detail/" + id;
+            }
+
             airline.setId(id);
             airlineService.updateAirline(airline);
             redirectAttributes.addFlashAttribute("successMessage", "Airline updated successfully!");
@@ -57,6 +70,7 @@ public class AirlineController {
         }
         return "redirect:/airlines/list";
     }
+
 
     @PostMapping("/delete/{id}")
     public String deleteAirline(@PathVariable Integer id, RedirectAttributes redirectAttributes) {

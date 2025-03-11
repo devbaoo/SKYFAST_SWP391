@@ -39,7 +39,13 @@
 
          existingAirline.setAirlineName(airline.getAirlineName());
          existingAirline.setCountryOfOperation(airline.getCountryOfOperation());
-         existingAirline.setFoundedDate(airline.getFoundedDate()); // LocalDate
+
+         if (airline.getFoundedDate() != null) { // Đảm bảo dữ liệu không mất
+             existingAirline.setFoundedDate(airline.getFoundedDate());
+         } else {
+             System.out.println("Warning: foundedDate is null!");
+         }
+
          existingAirline.setImage(airline.getImage());
 
          if (airline.getStatus() != null) {
