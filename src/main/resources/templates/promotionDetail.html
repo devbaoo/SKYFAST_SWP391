@@ -98,13 +98,13 @@
                 </div>
                 <div class="mb-3">
                     <label for="startDate" class="form-label">Start Date</label>
-                    <input type="date" class="form-control" id="startDate"
-                           th:value="${promotion.startDate != null ? #temporals.format(promotion.startDate, 'yyyy-MM-dd') : ''}">
+                    <input type="date" class="form-control" id="startDate" name="startDate"
+                           th:value="${promotion.startDate != null ? #temporals.format(promotion.startDate, 'yyyy-MM-dd') : ''}" required />
                 </div>
                 <div class="mb-3">
                     <label for="endDate" class="form-label">End Date</label>
-                    <input type="date" class="form-control" id="endDate"
-                           th:value="${promotion.endDate != null ? #temporals.format(promotion.endDate, 'yyyy-MM-dd') : ''}">
+                    <input type="date" class="form-control" id="endDate" name="endDate"
+                           th:value="${promotion.endDate != null ? #temporals.format(promotion.endDate, 'yyyy-MM-dd') : ''}" required />
                 </div>
                 <div class="mb-3">
                     <label for="status" class="form-label">Status</label>
