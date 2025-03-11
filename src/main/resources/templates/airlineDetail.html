@@ -97,7 +97,8 @@
                         <div class="mb-3">
                             <label for="foundedDate" class="form-label">Founded Date</label>
                             <input type="date" class="form-control" id="foundedDate"
-                                   th:value="${#temporals.format(airline.foundedDate, 'yyyy-MM-dd')}" required>
+                                   name="foundedDate"
+                                   th:value="${airline.foundedDate != null ? #temporals.format(airline.foundedDate, 'yyyy-MM-dd') : ''}">
                         </div>
                         <div class="mb-3">
                             <label for="currentImage" class="form-label">Current Image</label>
