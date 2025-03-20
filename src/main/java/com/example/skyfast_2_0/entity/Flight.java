@@ -5,7 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
@@ -23,13 +25,15 @@ public class Flight {
     @Column(name = "flight_number", nullable = false)
     private String flightNumber;
 
-    @NotNull
+    @NotNull(message = "Departure time is required")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "departure_time", nullable = false)
-    private LocalDateTime departureTime;
+    private Timestamp departureTime;
 
-    @NotNull
+    @NotNull(message = "Arrival time is required")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "arrival_time", nullable = false)
-    private LocalDateTime arrivalTime;
+    private Timestamp arrivalTime;
 
     @NotNull
     @Column(name = "duration", nullable = false)
@@ -54,6 +58,10 @@ public class Flight {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "route_id", nullable = false)
     private Route route;
+
+    @NotNull
+    @Column(name = "price", nullable = false)
+    private Integer price;
 
     @NotNull
     @Column(name = "status_flight", nullable = false)
