@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -41,8 +42,20 @@ public class AirlineController {
 
 
     @PostMapping("/create")
-    public String createAirline(@ModelAttribute Airline airline, RedirectAttributes redirectAttributes) {
+    public String createAirline(
+            @ModelAttribute Airline airline,
+            @RequestParam("imageFile") MultipartFile imageFile,
+            RedirectAttributes redirectAttributes) {
         try {
+            // Xử lý file upload (nếu cần lưu file)
+            if (!imageFile.isEmpty()) {
+                String fileName = imageFile.getOriginalFilename();
+                // Lưu file vào thư mục hoặc database, ví dụ:
+                // imageFile.transferTo(new File("path/to/save/" + fileName));
+                airline.setImage(fileName); // Lưu tên file vào entity
+            }
+
+            System.out.println("Received Founded Date: " + airline.getFoundedDate()); // Debug
             airlineService.createAirline(airline);
             redirectAttributes.addFlashAttribute("successMessage", "Airline created successfully!");
         } catch (Exception e) {
@@ -52,7 +65,11 @@ public class AirlineController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateAirline(@PathVariable Integer id, @ModelAttribute Airline airline, RedirectAttributes redirectAttributes) {
+    public String updateAirline(
+            @PathVariable Integer id,
+            @ModelAttribute Airline airline,
+            @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
+            RedirectAttributes redirectAttributes) {
         try {
             System.out.println("Updating Airline ID: " + id);
             System.out.println("Received Founded Date: " + airline.getFoundedDate()); // Debug
@@ -60,6 +77,13 @@ public class AirlineController {
             if (airline.getFoundedDate() == null) {
                 redirectAttributes.addFlashAttribute("errorMessage", "Founded Date cannot be null!");
                 return "redirect:/airlines/detail/" + id;
+            }
+
+            // Xử lý file upload nếu có
+            if (imageFile != null && !imageFile.isEmpty()) {
+                String fileName = imageFile.getOriginalFilename();
+                // Lưu file nếu cần: imageFile.transferTo(new File("path/to/save/" + fileName));
+                airline.setImage(fileName); // Cập nhật tên file vào entity
             }
 
             airline.setId(id);

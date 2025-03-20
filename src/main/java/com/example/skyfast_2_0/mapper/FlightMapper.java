@@ -11,13 +11,14 @@ public class FlightMapper {
         FlightDTO dto = new FlightDTO();
         dto.setId(flight.getId());
         dto.setFlightNumber(flight.getFlightNumber());
-        dto.setDepartureTime(flight.getDepartureTime());
-        dto.setArrivalTime(flight.getArrivalTime());
+        dto.setDepartureTime(flight.getDepartureTime()); // Đã là Timestamp
+        dto.setArrivalTime(flight.getArrivalTime());     // Đã là Timestamp
         dto.setDuration(flight.getDuration());
         dto.setStatus(flight.getStatus());
         dto.setAirlineId(flight.getAirline().getId());
         dto.setAirplaneId(flight.getAirplane().getId());
         dto.setRouteId(flight.getRoute().getId());
+        dto.setPrice(flight.getPrice());                 // Thêm price
         dto.setStatusFlight(flight.getStatusFlight());
         return dto;
     }
@@ -26,12 +27,12 @@ public class FlightMapper {
         Flight flight = new Flight();
         flight.setId(dto.getId());
         flight.setFlightNumber(dto.getFlightNumber());
-        flight.setDepartureTime(dto.getDepartureTime());
-        flight.setArrivalTime(dto.getArrivalTime());
+        flight.setDepartureTime(dto.getDepartureTime()); // Đã là Timestamp
+        flight.setArrivalTime(dto.getArrivalTime());     // Đã là Timestamp
         flight.setDuration(dto.getDuration());
         flight.setStatus(dto.getStatus());
+        flight.setPrice(dto.getPrice());                 // Thêm price
         flight.setStatusFlight(dto.getStatusFlight());
-        // Không set các relationship ở đây, sẽ được set trong Service
         return flight;
     }
 }

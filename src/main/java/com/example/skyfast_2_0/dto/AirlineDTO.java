@@ -14,6 +14,6 @@
      private Integer id;
      private String airlineName;
      private String countryName;
-     private LocalDate foundedDate;
+     private Date foundedDate;
      private String image;
  }

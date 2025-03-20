@@ -14,7 +14,6 @@
      @Autowired
      private AirlineRepository airlineRepository;
 
-     // Read operations
      public List<Airline> getAllAirlines() {
          return airlineRepository.findAll();
      }
@@ -24,26 +23,27 @@
                  .orElseThrow(() -> new RuntimeException("Airline not found with id: " + id));
      }
 
-     // Create operation
      public Airline createAirline(Airline airline) {
          if (airline.getAirlineName() == null || airline.getAirlineName().trim().isEmpty()) {
              throw new RuntimeException("Airline name cannot be empty");
+         }
+         if (airline.getFoundedDate() == null) {
+             throw new RuntimeException("Founded date cannot be null");
          }
          airline.setStatus(Status.ACTIVE);
          return airlineRepository.save(airline);
      }
 
-     // Update operation
      public Airline updateAirline(Airline airline) {
          Airline existingAirline = getAirlineById(airline.getId());
 
          existingAirline.setAirlineName(airline.getAirlineName());
          existingAirline.setCountryOfOperation(airline.getCountryOfOperation());
 
-         if (airline.getFoundedDate() != null) { // Đảm bảo dữ liệu không mất
+         if (airline.getFoundedDate() != null) {
              existingAirline.setFoundedDate(airline.getFoundedDate());
          } else {
-             System.out.println("Warning: foundedDate is null!");
+             throw new RuntimeException("Founded date cannot be null during update");
          }
 
          existingAirline.setImage(airline.getImage());
@@ -55,7 +55,6 @@
          return airlineRepository.save(existingAirline);
      }
 
-     // Soft delete operation
      public void deleteAirline(Integer id) {
          Airline airline = getAirlineById(id);
          airline.setStatus(Status.INACTIVE);
