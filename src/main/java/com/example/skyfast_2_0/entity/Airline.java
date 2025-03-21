@@ -6,10 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.time.LocalDate;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -32,8 +29,7 @@ public class Airline {
     private String countryOfOperation;
 
     @Column(name = "founded_date", nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd") // Đảm bảo convert từ String sang Date
-    private Date foundedDate;
+    private LocalDate foundedDate;
 
     @Size(max = 255)
     @Column(name = "image")

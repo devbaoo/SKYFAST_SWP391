@@ -1,19 +1,18 @@
- package com.example.skyfast_2_0.dto;
+package com.example.skyfast_2_0.dto;
 
- import lombok.Data;
- import lombok.AllArgsConstructor;
- import lombok.NoArgsConstructor;
+import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
- import java.time.LocalDate;
- import java.util.Date;
+import java.time.LocalDate;
 
- @Data
- @AllArgsConstructor
- @NoArgsConstructor
- public class AirlineDTO {
-     private Integer id;
-     private String airlineName;
-     private String countryName;
-     private Date foundedDate;
-     private String image;
- }
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class AirlineDTO {
+    private Integer id;
+    private String airlineName;
+    private String countryName;
+    private LocalDate foundedDate;
+    private String image;
+}

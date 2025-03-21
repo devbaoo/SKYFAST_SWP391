@@ -19,7 +19,7 @@ import jakarta.validation.Valid;
 import java.sql.Timestamp;
 
 @Controller
-@RequestMapping("/flights")
+@RequestMapping("/manager")
 public class FlightController {
 
     @Autowired
@@ -39,7 +39,7 @@ public class FlightController {
         binder.registerCustomEditor(Timestamp.class, new TimestampPropertyEditor());
     }
 
-    @GetMapping
+    @GetMapping("/flights")
     public String getAllFlights(Model model) {
         model.addAttribute("flights", flightService.getAllFlights());
         model.addAttribute("flight", new FlightDTO());
@@ -49,7 +49,7 @@ public class FlightController {
         return "flightManagement";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/flight/{id}")
     public String getFlightById(@PathVariable Integer id, Model model) {
         model.addAttribute("flight", flightService.getFlightById(id));
         model.addAttribute("airlines", airlineService.getAllAirlines());
@@ -58,7 +58,7 @@ public class FlightController {
         return "flightDetail";
     }
 
-    @PostMapping
+    @PostMapping("/create/flight")
     public String createFlight(
             @Valid @ModelAttribute FlightDTO flightDTO,
             BindingResult bindingResult,
@@ -81,10 +81,10 @@ public class FlightController {
             System.out.println("Error creating flight: " + e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to create flight: " + e.getMessage());
         }
-        return "redirect:/flights";
+        return "redirect:/manager/flights";
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("/update/flight/{id}")
     public String updateFlight(
             @PathVariable Integer id,
             @Valid @ModelAttribute("flight") FlightDTO flightDTO,
@@ -108,12 +108,12 @@ public class FlightController {
             System.out.println("Error updating flight: " + e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to update flight: " + e.getMessage());
         }
-        return "redirect:/flights";
+        return "redirect:/manager/flights";
     }
 
-    @PostMapping("/{id}/delete")
+    @PostMapping("/delete/flight/{id}")
     public String deleteFlight(@PathVariable Integer id) {
         flightService.deleteFlight(id);
-        return "redirect:/flights";
+        return "redirect:/manager/flights";
     }
 }
