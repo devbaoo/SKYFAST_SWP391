@@ -45,17 +45,17 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="/flights" class="nav-link" data-page="/flights">
+                <a href="/manager/flights" class="nav-link" data-page="/manager/flights">
                     <i class="fas fa-plane"></i>Flight Management
                 </a>
             </li>
             <li class="nav-item">
-                <a href="/airlines/list" class="nav-link" data-page="/airlines/list">
+                <a href="/manager/airlinelist" class="nav-link" data-page="/manager/airlinelist">
                     <i class="fas fa-plane"></i>Airline Management
                 </a>
             </li>
             <li class="nav-item">
-                <a href="/users/list" class="nav-link" data-page="/users/list">
+                <a href="/manager/userlist" class="nav-link" data-page="/manager/userlist">
                     <i class="fas fa-users"></i>User Management
                 </a>
             </li>
@@ -68,7 +68,7 @@
             <div class="content-container" style="width: 1545px;">
                 <div class="card shadow-lg p-4">
                     <h2 class="text-dark fw-bold">Flight Detail</h2>
-                    <form th:action="@{/flights/{id}(id=${flight.id})}" th:object="${flight}" method="post">
+                    <form th:action="@{/manager/update/flight/{id}(id=${flight.id})}" th:object="${flight}" method="post">
                         <div class="mb-3">
                             <label for="flightId" class="form-label">Flight ID</label>
                             <input type="text" class="form-control" id="flightId" th:field="*{id}" readonly>
@@ -76,7 +76,7 @@
                         <div class="mb-3">
                             <label for="flightNumber" class="form-label">Flight Number</label>
                             <input type="text" class="form-control" id="flightNumber" th:field="*{flightNumber}"
-                                   required>
+                                   readonly>
                             <div class="text-danger" th:errors="*{flightNumber}"></div>
                         </div>
                         <div class="mb-3">
@@ -84,7 +84,7 @@
                             <input type="datetime-local" class="form-control" id="departureTime"
                                    th:field="*{departureTime}"
                                    th:value="${flight.departureTime != null ? #dates.format(flight.departureTime, 'yyyy-MM-dd''T''HH:mm') : ''}"
-                                   required>
+                                   readonly>
                             <div class="text-danger" th:errors="*{departureTime}"></div>
                         </div>
                         <div class="mb-3">
@@ -92,12 +92,12 @@
                             <input type="datetime-local" class="form-control" id="arrivalTime"
                                    th:field="*{arrivalTime}"
                                    th:value="${flight.arrivalTime != null ? #dates.format(flight.arrivalTime, 'yyyy-MM-dd''T''HH:mm') : ''}"
-                                   required>
+                                   readonly>
                             <div class="text-danger" th:errors="*{arrivalTime}"></div>
                         </div>
                         <div class="mb-3">
                             <label for="duration" class="form-label">Duration (minutes)</label>
-                            <input type="number" class="form-control" id="duration" th:field="*{duration}" required>
+                            <input type="number" class="form-control" id="duration" th:field="*{duration}" readonly>
                             <div class="text-danger" th:errors="*{duration}"></div>
                         </div>
                         <div class="mb-3">
@@ -127,33 +127,41 @@
                         </div>
                         <div class="mb-3">
                             <label for="airlineId" class="form-label">Airline</label>
-                            <select class="form-select" id="airlineId" th:field="*{airlineId}" required>
+                            <select class="form-select" id="airlineId" disabled>
                                 <option th:each="airline : ${airlines}" th:value="${airline.id}"
-                                        th:text="${airline.airlineName}">
+                                        th:text="${airline.airlineName}"
+                                        th:selected="${airline.id == flight.airlineId}">
                                 </option>
                             </select>
+                            <input type="hidden" name="airlineId" th:field="*{airlineId}">
                             <div class="text-danger" th:errors="*{airlineId}"></div>
                         </div>
+
                         <div class="mb-3">
                             <label for="airplaneId" class="form-label">Airplane</label>
-                            <select class="form-select" id="airplaneId" th:field="*{airplaneId}" required>
+                            <select class="form-select" id="airplaneId" disabled>
                                 <option th:each="airplane : ${airplanes}" th:value="${airplane.id}"
-                                        th:text="${airplane.airplaneName}">
+                                        th:text="${airplane.airplaneName}"
+                                        th:selected="${airplane.id == flight.airplaneId}">
                                 </option>
                             </select>
+                            <input type="hidden" name="airplaneId" th:field="*{airplaneId}">
                             <div class="text-danger" th:errors="*{airplaneId}"></div>
                         </div>
+
                         <div class="mb-3">
                             <label for="routeId" class="form-label">Route</label>
-                            <select class="form-select" id="routeId" th:field="*{routeId}" required>
+                            <select class="form-select" id="routeId" disabled>
                                 <option th:each="route : ${routes}" th:value="${route.id}"
-                                        th:text="${route.departureAirportId + ' -> ' + route.arrivalAirportId}">
+                                        th:text="${route.departureAirportId + ' -> ' + route.arrivalAirportId}"
+                                        th:selected="${route.id == flight.routeId}">
                                 </option>
                             </select>
+                            <input type="hidden" name="routeId" th:field="*{routeId}">
                             <div class="text-danger" th:errors="*{routeId}"></div>
                         </div>
                         <div class="mb-3">
-                            <a href="/flights" class="btn btn-secondary">
+                            <a href="/manager/flights" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left"></i> Back
                             </a>
                             <button type="submit" class="btn btn-primary">

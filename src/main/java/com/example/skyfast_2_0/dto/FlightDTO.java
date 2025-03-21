@@ -26,4 +26,5 @@ public class FlightDTO {
     private Integer airplaneId;
     private Integer routeId;
     private String statusFlight = "ACTIVE";
+
 }

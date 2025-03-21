@@ -10,7 +10,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/manager")
 public class UserController {
     private final UserService userService;
 
@@ -18,24 +18,24 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/list")
+    @GetMapping("/userlist")
     public String getAllUsers(Model model) {
         List<UserDTO> users = userService.getAllActiveAndInactiveUsers();
         model.addAttribute("users", users);
         return "userlist";
     }
 
-    @GetMapping("/detail/{id}")
+    @GetMapping("user/detail/{id}")
     public String getUserDetail(@PathVariable Integer id, Model model) {
         UserDTO user = userService.getUserById(id);
         if (user != null) {
             model.addAttribute("user", user);
             return "UserDetail";
         }
-        return "redirect:/users/list";
+        return "redirect:/manager/userlist";
     }
 
-    @PostMapping("/create")
+    @PostMapping("/create/user")
     public String createUser(@ModelAttribute UserDTO userDTO, RedirectAttributes redirectAttributes) {
         try {
             userService.createUser(userDTO);
@@ -43,10 +43,10 @@ public class UserController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to create user: " + e.getMessage());
         }
-        return "redirect:/users/list";
+        return "redirect:/manager/userlist";
     }
 
-    @PostMapping("/update/{id}")
+    @PostMapping("user/update/{id}")
     public String updateUser(@PathVariable Integer id, @ModelAttribute UserDTO userDTO, RedirectAttributes redirectAttributes) {
         System.out.println("Received dateOfBirth: " + userDTO.getDateOfBirth()); // Kiểm tra dữ liệu nhận được
 
@@ -60,11 +60,11 @@ public class UserController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to update user: " + e.getMessage());
         }
-        return "redirect:/users/list";
+        return "redirect:/manager/userlist";
     }
 
 
-    @PostMapping("/delete/{id}")
+    @PostMapping("/delete/user/{id}")
     public String deleteUser(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         try {
             if (userService.deleteUser(id)) {
@@ -75,6 +75,6 @@ public class UserController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete user: " + e.getMessage());
         }
-        return "redirect:/users/list";
+        return "redirect:/manager/userlist";
     }
 }
