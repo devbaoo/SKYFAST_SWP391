@@ -28,12 +28,12 @@ public class Flight {
     @NotNull(message = "Departure time is required")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "departure_time", nullable = false)
-    private Timestamp departureTime;
+    private LocalDateTime departureTime;
 
     @NotNull(message = "Arrival time is required")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "arrival_time", nullable = false)
-    private Timestamp arrivalTime;
+    private LocalDateTime arrivalTime;
 
     @NotNull
     @Column(name = "duration", nullable = false)

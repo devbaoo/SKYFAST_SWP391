@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 public class FlightDTO {
@@ -13,11 +14,11 @@ public class FlightDTO {
 
     @NotNull(message = "Departure time is required")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    private Timestamp departureTime;
+    private LocalDateTime departureTime;
 
     @NotNull(message = "Arrival time is required")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    private Timestamp arrivalTime;
+    private LocalDateTime arrivalTime;
 
     private Integer duration;
     private Integer price;

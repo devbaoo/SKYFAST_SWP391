@@ -130,8 +130,8 @@
                 <tr th:each="flight : ${flights}"
                     th:class="${flight.statusFlight == 'INACTIVE' ? 'table-secondary' : ''}">
                     <td th:text="${flight.flightNumber}"></td>
-                    <td th:text="${#dates.format(flight.departureTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                    <td th:text="${#dates.format(flight.arrivalTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${#temporals.format(flight.departureTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${#temporals.format(flight.arrivalTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td th:text="${flight.duration + ' mins'}"></td>
                     <td>
                                 <span th:class="${'badge ' + (flight.status == 'SCHEDULED' ? 'bg-primary' :
