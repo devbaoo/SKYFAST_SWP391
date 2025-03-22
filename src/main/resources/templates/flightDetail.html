@@ -83,7 +83,7 @@
                             <label for="departureTime" class="form-label">Departure Time</label>
                             <input type="datetime-local" class="form-control" id="departureTime"
                                    th:field="*{departureTime}"
-                                   th:value="${flight.departureTime != null ? #dates.format(flight.departureTime, 'yyyy-MM-dd''T''HH:mm') : ''}"
+                                   th:value="${flight.departureTime != null ? #temporals.format(flight.departureTime, 'yyyy-MM-dd''T''HH:mm') : ''}"
                                    readonly>
                             <div class="text-danger" th:errors="*{departureTime}"></div>
                         </div>
@@ -91,7 +91,7 @@
                             <label for="arrivalTime" class="form-label">Arrival Time</label>
                             <input type="datetime-local" class="form-control" id="arrivalTime"
                                    th:field="*{arrivalTime}"
-                                   th:value="${flight.arrivalTime != null ? #dates.format(flight.arrivalTime, 'yyyy-MM-dd''T''HH:mm') : ''}"
+                                   th:value="${flight.arrivalTime != null ? #temporals.format(flight.arrivalTime, 'yyyy-MM-dd''T''HH:mm') : ''}"
                                    readonly>
                             <div class="text-danger" th:errors="*{arrivalTime}"></div>
                         </div>

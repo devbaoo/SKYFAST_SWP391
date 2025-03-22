@@ -1,6 +1,5 @@
 package com.example.skyfast_2_0.controller;
 
-import com.example.skyfast_2_0.config.TimestampPropertyEditor;
 import com.example.skyfast_2_0.dto.FlightDTO;
 import com.example.skyfast_2_0.service.FlightService;
 import com.example.skyfast_2_0.service.AirlineService;
@@ -33,11 +32,6 @@ public class FlightController {
 
     @Autowired
     private RouteService routeService;
-
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Timestamp.class, new TimestampPropertyEditor());
-    }
 
     @GetMapping("/flights")
     public String getAllFlights(Model model) {
